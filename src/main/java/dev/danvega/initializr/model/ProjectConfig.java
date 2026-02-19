@@ -72,6 +72,10 @@ public class ProjectConfig {
         return selectedDependencies.size();
     }
 
+    public void clearDependencies() {
+        selectedDependencies.clear();
+    }
+
     public void updatePackageName() {
         this.packageName = groupId + "." + artifactId;
     }

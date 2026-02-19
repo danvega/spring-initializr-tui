@@ -171,6 +171,12 @@ public class SpringInitializrTui extends ToolkitApp {
             return EventResult.HANDLED;
         }
 
+        // x — Clear all dependencies (when not in a text field)
+        if (event.isChar('x') && !isTextFieldFocused()) {
+            mainScreen.clearDependencies();
+            return EventResult.HANDLED;
+        }
+
         // / — Enter search mode
         if (event.isChar('/')) {
             mainScreen.enterSearchMode();

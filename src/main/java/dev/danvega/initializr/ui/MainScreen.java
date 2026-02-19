@@ -135,6 +135,10 @@ public class MainScreen {
         }
     }
 
+    public void clearDependencies() {
+        config.clearDependencies();
+    }
+
     private void cycleSelectField(InitializrMetadata.SelectField field, int direction,
                                    java.util.function.Supplier<String> getter,
                                    java.util.function.Consumer<String> setter) {
@@ -250,6 +254,10 @@ public class MainScreen {
                             text("[ " + searchBuffer + "_ ]").fg(SPRING_GREEN)
                     )
             );
+        } else if (config.getSelectedCount() > 0) {
+            elements.add(
+                    text("  Press / to search, x to clear all").fg(DIM_GRAY).italic()
+            );
         } else {
             elements.add(
                     text("  Press / to search dependencies").fg(DIM_GRAY).italic()
@@ -285,6 +293,7 @@ public class MainScreen {
                 text("/").fg(Color.WHITE), text(":search  ").fg(DIM_GRAY),
                 text("Space").fg(Color.WHITE), text(":toggle  ").fg(DIM_GRAY),
                 text("\u2190\u2192").fg(Color.WHITE), text(":change  ").fg(DIM_GRAY),
+                text("x").fg(Color.WHITE), text(":clear  ").fg(DIM_GRAY),
                 text("?").fg(Color.WHITE), text(":help  ").fg(DIM_GRAY),
                 text("q").fg(Color.WHITE), text(":quit").fg(DIM_GRAY),
                 spacer()
