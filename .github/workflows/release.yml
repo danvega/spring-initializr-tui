@@ -18,10 +18,6 @@ jobs:
             arch: aarch64
             artifact: spring-initializr-tui-macos-aarch64
             ext: ''
-          - os: macos-13
-            arch: x86_64
-            artifact: spring-initializr-tui-macos-x86_64
-            ext: ''
           - os: ubuntu-latest
             arch: x86_64
             artifact: spring-initializr-tui-linux-x86_64
@@ -69,7 +65,7 @@ jobs:
           merge-multiple: true
 
       - name: Make binaries executable
-        run: chmod +x artifacts/spring-initializr-tui-macos-* artifacts/spring-initializr-tui-linux-*
+        run: chmod +x artifacts/spring-initializr-tui-macos-aarch64 artifacts/spring-initializr-tui-linux-*
 
       - uses: softprops/action-gh-release@v2
         with:

@@ -54,7 +54,7 @@ A quick-reference help overlay showing all keyboard shortcuts organized by scree
 
 ## Supported Platforms
 
-- macOS (aarch64, x86_64)
+- macOS (aarch64)
 - Linux (x86_64)
 - Windows (x86_64)
 
