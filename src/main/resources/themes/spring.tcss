@@ -1,0 +1,55 @@
+/* Spring Initializr TUI Theme */
+/* Primary accent: Spring Green #6DB33F */
+
+$spring-green: #6DB33F;
+$bright-green: #8FD560;
+$success: #28A745;
+$error: #DC3545;
+$dim: dark-gray;
+
+/* Global */
+* {
+    color: white;
+}
+
+/* Header panel */
+#header {
+    border-color: $spring-green;
+    border-type: rounded;
+}
+
+/* Config form */
+#config-form {
+    border-type: rounded;
+}
+
+#config-form:focus {
+    border-color: $bright-green;
+}
+
+/* Dependency picker */
+#dep-picker {
+    border-type: rounded;
+}
+
+#dep-picker:focus {
+    border-color: $bright-green;
+}
+
+/* Explore panel */
+#explore-panel {
+    border-type: rounded;
+    border-color: $spring-green;
+}
+
+/* Generate/Success panel */
+#success-panel {
+    border-type: rounded;
+    border-color: $success;
+}
+
+/* Error panel */
+#error-panel {
+    border-type: rounded;
+    border-color: $error;
+}

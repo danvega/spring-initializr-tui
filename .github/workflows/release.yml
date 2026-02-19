@@ -1,0 +1,76 @@
+name: Release Native Binaries
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            arch: aarch64
+            artifact: spring-initializr-tui-macos-aarch64
+            ext: ''
+          - os: macos-13
+            arch: x86_64
+            artifact: spring-initializr-tui-macos-x86_64
+            ext: ''
+          - os: ubuntu-latest
+            arch: x86_64
+            artifact: spring-initializr-tui-linux-x86_64
+            ext: ''
+          - os: windows-latest
+            arch: x86_64
+            artifact: spring-initializr-tui-windows-x86_64.exe
+            ext: '.exe'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+
+      - name: Set up Visual Studio Build Tools
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build native image
+        run: mvn -Pnative package -DskipTests
+
+      - name: Rename binary
+        shell: bash
+        run: mv target/spring-initializr-tui${{ matrix.ext }} target/${{ matrix.artifact }}
+
+      - name: Make binary executable
+        if: runner.os != 'Windows'
+        run: chmod +x target/${{ matrix.artifact }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: target/${{ matrix.artifact }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Make binaries executable
+        run: chmod +x artifacts/spring-initializr-tui-macos-* artifacts/spring-initializr-tui-linux-*
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
