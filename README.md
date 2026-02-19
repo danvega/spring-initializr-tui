@@ -13,6 +13,7 @@ An interactive terminal UI for scaffolding Spring Boot projects, powered by the 
 - [Build & Run](#build--run)
 - [Setting Up Shell Access](#setting-up-shell-access)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
+- [Post-Generate Hook](#post-generate-hook)
 - [About TamboUI](#about-tamboui)
 - [Project Structure](#project-structure)
 - [Tech Stack](#tech-stack)
@@ -44,7 +45,8 @@ A quick-reference help overlay showing all keyboard shortcuts organized by scree
 ## Features
 
 - Configure Spring Boot projects entirely from your terminal (group, artifact, Boot version, Java version, packaging, language)
-- Search and select dependencies with a categorized picker
+- Search and select dependencies with a categorized picker and fuzzy search
+- Filter dependencies by category and surface recently used dependencies
 - Explore generated build files with syntax highlighting before downloading
 - Switch between `pom.xml`, `build.gradle`, and `build.gradle.kts` previews
 - Generate and extract projects to the current working directory
@@ -145,6 +147,9 @@ The generated project will be extracted into the current working directory.
 | `Left` / `Right` | Cycle field options |
 | `/` | Search dependencies |
 | `Space` / `Enter` | Toggle dependency |
+| `c` | Cycle category filter |
+| `x` | Clear all dependencies |
+| `?` | Help |
 | `e` | Explore build file |
 | `g` | Generate project |
 | `Ctrl+C` | Quit |
@@ -159,6 +164,23 @@ The generated project will be extracted into the current working directory.
 | `1` / `2` / `3` | Jump to pom.xml / build.gradle / build.gradle.kts |
 | `Enter` | Generate project |
 | `Esc` | Back |
+
+## Post-Generate Hook
+
+You can configure a command to run automatically in the generated project directory after the TUI exits. This is useful for launching tools like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) right after scaffolding a project.
+
+Edit `~/.spring-initializr/config.json` and add a `postGenerateCommand`:
+
+```json
+{
+  "postGenerateCommand": "claude",
+  ...
+}
+```
+
+When set, the generate screen will show the hook in the footer (e.g., `[Enter] Open + run claude`). After you select an IDE and press Enter, the TUI exits, the IDE opens, and then the configured command runs in the project directory with full terminal control.
+
+Set `postGenerateCommand` to an empty string `""` (or remove it) to disable the hook.
 
 ## About TamboUI
 

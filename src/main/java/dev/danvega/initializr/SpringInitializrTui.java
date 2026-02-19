@@ -49,6 +49,10 @@ public class SpringInitializrTui extends ToolkitApp {
     private volatile double splashProgress = 0.0;
     private volatile String splashMessage = "Connecting to start.spring.io...";
 
+    // Post-generate hook: stored before quit(), executed after run() returns
+    private volatile String pendingHookCommand;
+    private volatile Path pendingHookDir;
+
     @Override
     protected void onStart() {
         CompletableFuture.runAsync(() -> {
@@ -475,6 +479,7 @@ public class SpringInitializrTui extends ToolkitApp {
                 configStore.addRecentDependencies(prefs, config.getSelectedDependencies());
                 configStore.save(prefs);
 
+                generateScreen.setPostGenerateCommand(prefs.getPostGenerateCommand());
                 generateScreen.setSuccess(projectDir, ides);
             } catch (Exception e) {
                 generateScreen.setError("Generation failed: " + e.getMessage());
@@ -488,6 +493,15 @@ public class SpringInitializrTui extends ToolkitApp {
         if (ide != null && projectDir != null) {
             try {
                 IdeLauncher.launch(ide, projectDir);
+
+                // Store post-generate hook info before quitting
+                var prefs = configStore.load();
+                String hookCmd = prefs.getPostGenerateCommand();
+                if (hookCmd != null && !hookCmd.isBlank()) {
+                    pendingHookCommand = hookCmd;
+                    pendingHookDir = projectDir;
+                }
+
                 quit();
             } catch (IOException e) {
                 generateScreen.setError("Failed to launch IDE: " + e.getMessage());
@@ -601,6 +615,19 @@ public class SpringInitializrTui extends ToolkitApp {
     }
 
     public static void main(String[] args) throws Exception {
-        new SpringInitializrTui().run();
+        var app = new SpringInitializrTui();
+        app.run();
+
+        // Execute post-generate hook after TUI has fully exited and terminal is restored
+        if (app.pendingHookCommand != null && app.pendingHookDir != null) {
+            boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("win");
+            var pb = isWindows
+                    ? new ProcessBuilder("cmd", "/c", app.pendingHookCommand)
+                    : new ProcessBuilder("sh", "-c", app.pendingHookCommand);
+            pb.directory(app.pendingHookDir.toFile());
+            pb.inheritIO();
+            Process process = pb.start();
+            System.exit(process.waitFor());
+        }
     }
 }

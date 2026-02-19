@@ -72,7 +72,11 @@ public class ConfigStore {
         private String lastGroupId = "com.example";
         private String lastPackaging = "jar";
         private String lastApplicationFormat = "properties";
+        private String postGenerateCommand = "";
         private List<List<String>> recentDependencies = new ArrayList<>();
+
+        public String getPostGenerateCommand() { return postGenerateCommand; }
+        public void setPostGenerateCommand(String v) { this.postGenerateCommand = v; }
 
         public String getLastProjectType() { return lastProjectType; }
         public void setLastProjectType(String v) { this.lastProjectType = v; }

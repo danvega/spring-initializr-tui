@@ -27,6 +27,7 @@ public class GenerateScreen {
     private List<IdeLauncher.DetectedIde> detectedIdes = List.of();
     private int selectedIdeIndex = 0;
     private String errorMessage;
+    private String postGenerateCommand = "";
 
     public void setGenerating(double progress, String message) {
         this.state = State.GENERATING;
@@ -62,6 +63,10 @@ public class GenerateScreen {
     }
 
     public Path getProjectDir() { return projectDir; }
+
+    public void setPostGenerateCommand(String command) {
+        this.postGenerateCommand = command != null ? command : "";
+    }
 
     public Element render() {
         return switch (state) {
@@ -110,9 +115,12 @@ public class GenerateScreen {
         }
 
         elements.add(text(""));
+        String openLabel = postGenerateCommand.isBlank()
+                ? "  [Enter] Open  "
+                : "  [Enter] Open + run " + postGenerateCommand + "  ";
         elements.add(
                 row(
-                        text("  [Enter] Open  ").fg(SPRING_GREEN),
+                        text(openLabel).fg(SPRING_GREEN),
                         text("  [g] Generate Another  ").fg(Color.WHITE),
                         text("  [q] Quit  ").fg(Color.DARK_GRAY)
                 )
