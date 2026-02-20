@@ -18,8 +18,7 @@ public final class WindowsIdeLocator implements OsIdeLocator {
     private static final Path LOCAL_APP_DATA = Path.of(
             System.getenv("LOCALAPPDATA") != null
                     ? System.getenv("LOCALAPPDATA")
-                    : System.getProperty("user.home") + "\\AppData\\Local"
-    );
+                    : System.getProperty("user.home") + "\\AppData\\Local");
 
     @Override
     public List<DetectedIde> detectIdes() {
@@ -39,18 +38,58 @@ public final class WindowsIdeLocator implements OsIdeLocator {
 
         checkPathCommand("netbeans", "Apache NetBeans", ides);
 
+        checkPathCommand("nvim", "Neovim", ides);
+
         return ides;
     }
 
     @Override
     public void launch(DetectedIde ide, Path projectDir) throws IOException {
-        ProcessBuilder pb = new ProcessBuilder(
-                "cmd", "/c", "start", "\"\"",
-                ide.path().toString(),
-                projectDir.toString()
-        );
+        ProcessBuilder pb;
+        if ("nvim".equals(ide.command())) {
+            pb = buildNvimCommand(ide, projectDir);
+        } else {
+            pb = new ProcessBuilder(
+                    "cmd", "/c", "start", "\"\"",
+                    ide.path().toString(),
+                    projectDir.toString());
+        }
         pb.inheritIO();
         pb.start();
+    }
+
+    private ProcessBuilder buildNvimCommand(DetectedIde ide, Path projectDir) {
+        // 1. Windows Terminal (modern, preferred)
+        if (commandExists("wt")) {
+            return new ProcessBuilder(
+                    "wt", "new-tab",
+                    "--title", "Neovim",
+                    ide.path().toString(), projectDir.toString());
+        }
+
+        // 2. PowerShell (available on all modern Windows)
+        if (commandExists("pwsh")) {
+            return new ProcessBuilder(
+                    "pwsh", "-Command",
+                    "Start-Process pwsh -ArgumentList '-NoExit', '-Command', '" +
+                            ide.path().toString() + " \"" + projectDir.toString() + "\"'");
+        }
+
+        // 3. Fallback: plain cmd in a new window
+        return new ProcessBuilder(
+                "cmd", "/c", "start", "\"Neovim\"", "cmd", "/k",
+                ide.path().toString(), projectDir.toString());
+    }
+
+    private boolean commandExists(String command) {
+        try {
+            return new ProcessBuilder("where", command)
+                    .redirectErrorStream(true)
+                    .start()
+                    .waitFor() == 0;
+        } catch (IOException | InterruptedException e) {
+            return false;
+        }
     }
 
     private void detectIntelliJ(List<DetectedIde> ides) {
@@ -60,13 +99,15 @@ public final class WindowsIdeLocator implements OsIdeLocator {
         };
 
         for (Path root : searchRoots) {
-            if (!Files.isDirectory(root)) continue;
+            if (!Files.isDirectory(root))
+                continue;
             try (DirectoryStream<Path> dirs = Files.newDirectoryStream(root, "IntelliJ IDEA*")) {
                 for (Path dir : dirs) {
                     Path exe = dir.resolve("bin\\idea64.exe");
                     if (Files.exists(exe)) {
                         String name = dir.getFileName().toString().contains("Community")
-                                ? "IntelliJ IDEA CE" : "IntelliJ IDEA";
+                                ? "IntelliJ IDEA CE"
+                                : "IntelliJ IDEA";
                         ides.add(new DetectedIde(name, "idea", exe));
                     }
                 }
