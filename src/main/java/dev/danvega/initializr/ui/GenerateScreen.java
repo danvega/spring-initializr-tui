@@ -15,8 +15,10 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class GenerateScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color SUCCESS_GREEN = Color.rgb(40, 167, 69);
+    private static final Color BLUE = Color.rgb(137, 180, 250);
+    private static final Color GREEN = Color.rgb(166, 227, 161);
+    private static final Color RED = Color.rgb(243, 139, 168);
+    private static final Color YELLOW = Color.rgb(249, 226, 175);
 
     public enum State { GENERATING, SUCCESS, ERROR }
 
@@ -81,16 +83,16 @@ public class GenerateScreen {
                 column(
                         spacer(),
                         text("  " + statusMessage).fg(Color.WHITE),
-                        gauge(progress).fg(SPRING_GREEN),
+                        gauge(progress).fg(BLUE),
                         spacer()
                 )
-        ).rounded().borderColor(SPRING_GREEN).id("generate-panel");
+        ).rounded().borderColor(BLUE).id("generate-panel");
     }
 
     private Element renderSuccess() {
         var elements = new ArrayList<Element>();
 
-        elements.add(text("  \u2713 Project Generated!").fg(SUCCESS_GREEN).bold());
+        elements.add(text("  \u2713 Project Generated!").fg(GREEN).bold());
         elements.add(text(""));
         elements.add(text("  Extracted to: " + projectDir).fg(Color.WHITE));
         elements.add(text(""));
@@ -103,7 +105,7 @@ public class GenerateScreen {
                 String prefix = i == selectedIdeIndex ? "    \u25b8 " : "      ";
                 var line = text(prefix + ide.name());
                 if (i == selectedIdeIndex) {
-                    line = line.fg(SPRING_GREEN).bold();
+                    line = line.fg(BLUE).bold();
                 } else {
                     line = line.fg(Color.WHITE);
                 }
@@ -120,7 +122,7 @@ public class GenerateScreen {
                 : "  [Enter] Open + run " + postGenerateCommand + "  ";
         elements.add(
                 row(
-                        text(openLabel).fg(SPRING_GREEN),
+                        text(openLabel).fg(BLUE),
                         text("  [g] Generate Another  ").fg(Color.WHITE),
                         text("  [q] Quit  ").fg(Color.DARK_GRAY)
                 )
@@ -128,7 +130,7 @@ public class GenerateScreen {
 
         return panel("\u2713 Project Generated!",
                 column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(SUCCESS_GREEN).id("success-panel");
+        ).rounded().borderColor(GREEN).id("success-panel");
     }
 
     private Element renderError() {

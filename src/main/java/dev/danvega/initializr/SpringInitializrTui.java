@@ -30,7 +30,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class SpringInitializrTui extends ToolkitApp {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
+    private static final Color CATPPUCCIN_BLUE = Color.rgb(137, 180, 250);
 
     enum Screen { SPLASH, MAIN, EXPLORE, GENERATE, HELP }
 
@@ -93,8 +93,8 @@ public class SpringInitializrTui extends ToolkitApp {
     protected Element render() {
         Element content = switch (currentScreen) {
             case SPLASH -> new SplashScreen(splashProgress, splashMessage).render();
-            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(SPRING_GREEN);
-            case EXPLORE -> exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(SPRING_GREEN);
+            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(CATPPUCCIN_BLUE);
+            case EXPLORE -> exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(CATPPUCCIN_BLUE);
             case GENERATE -> generateScreen.render();
             case HELP -> helpScreen.render();
         };
@@ -596,11 +596,11 @@ public class SpringInitializrTui extends ToolkitApp {
         return column(
                 panel("",
                         row(
-                                text("  SPRING INITIALIZR").fg(SPRING_GREEN).bold(),
+                                text("  SPRING INITIALIZR").fg(CATPPUCCIN_BLUE).bold(),
                                 spacer(),
                                 text("Explore  ").fg(Color.CYAN)
                         )
-                ).rounded().borderColor(SPRING_GREEN).length(3),
+                ).rounded().borderColor(CATPPUCCIN_BLUE).length(3),
                 row(text(summary).fg(Color.DARK_GRAY)).length(1),
                 exploreScreen.render(26),
                 row(

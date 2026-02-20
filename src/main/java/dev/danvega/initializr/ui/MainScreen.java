@@ -15,9 +15,9 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class MainScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color BRIGHT_GREEN = Color.rgb(143, 213, 96);
-    private static final Color DIM_GRAY = Color.DARK_GRAY;
+    private static final Color BLUE = Color.rgb(137, 180, 250);
+    private static final Color LAVENDER = Color.rgb(180, 190, 254);
+    private static final Color OVERLAY = Color.rgb(147, 153, 178);
 
     public enum FocusArea { PROJECT_TYPE, LANGUAGE, BOOT_VERSION, GROUP, ARTIFACT, NAME, DESCRIPTION, PACKAGING, JAVA_VERSION, APPLICATION_FORMAT, DEPENDENCIES }
 
@@ -172,11 +172,11 @@ public class MainScreen {
     private Element renderHeader() {
         return panel("",
                 row(
-                        text("  SPRING INITIALIZR").fg(SPRING_GREEN).bold(),
+                        text("  SPRING INITIALIZR").fg(BLUE).bold(),
                         spacer(),
-                        text("v" + appVersion() + "  ").fg(DIM_GRAY)
+                        text("v" + appVersion() + "  ").fg(OVERLAY)
                 )
-        ).rounded().borderColor(SPRING_GREEN).length(3).id("header");
+        ).rounded().borderColor(BLUE).length(3).id("header");
     }
 
     private Element renderConfigForm() {
@@ -207,13 +207,13 @@ public class MainScreen {
 
         return panel("Configuration",
                 column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(focusArea != FocusArea.DEPENDENCIES ? BRIGHT_GREEN : DIM_GRAY).id("config-form");
+        ).rounded().borderColor(focusArea != FocusArea.DEPENDENCIES ? LAVENDER : OVERLAY).id("config-form");
     }
 
     private Element renderSelectRow(String label, InitializrMetadata.SelectField field, String currentValue, boolean focused) {
         var parts = new ArrayList<Element>();
         String paddedLabel = String.format("  %-12s", label);
-        parts.add(text(paddedLabel).fg(focused ? Color.WHITE : DIM_GRAY).bold());
+        parts.add(text(paddedLabel).fg(focused ? Color.WHITE : OVERLAY).bold());
 
         if (field != null) {
             for (var option : field.values()) {
@@ -221,11 +221,11 @@ public class MainScreen {
                 String marker = selected ? "\u25cf " : "\u25cb ";
                 var optText = text(marker + displayName(option) + "  ");
                 if (selected && focused) {
-                    optText = optText.fg(SPRING_GREEN).bold();
+                    optText = optText.fg(BLUE).bold();
                 } else if (selected) {
-                    optText = optText.fg(SPRING_GREEN);
+                    optText = optText.fg(BLUE);
                 } else {
-                    optText = optText.fg(DIM_GRAY);
+                    optText = optText.fg(OVERLAY);
                 }
                 parts.add(optText);
             }
@@ -233,7 +233,7 @@ public class MainScreen {
 
         if (focused) {
             parts.add(spacer());
-            parts.add(text("\u25c0 \u25b6 ").fg(DIM_GRAY));
+            parts.add(text("\u25c0 \u25b6 ").fg(OVERLAY));
         }
 
         return row(parts.toArray(Element[]::new));
@@ -244,8 +244,8 @@ public class MainScreen {
         String displayValue = focused ? "[ " + value + "_ ]" : "[ " + value + " ]";
 
         return row(
-                text(paddedLabel).fg(focused ? Color.WHITE : DIM_GRAY).bold(),
-                text(displayValue).fg(focused ? SPRING_GREEN : Color.WHITE)
+                text(paddedLabel).fg(focused ? Color.WHITE : OVERLAY).bold(),
+                text(displayValue).fg(focused ? BLUE : Color.WHITE)
         );
     }
 
@@ -257,16 +257,16 @@ public class MainScreen {
             elements.add(
                     row(
                             text("  Search: ").fg(Color.WHITE).bold(),
-                            text("[ " + searchBuffer + "_ ]").fg(SPRING_GREEN)
+                            text("[ " + searchBuffer + "_ ]").fg(BLUE)
                     )
             );
         } else if (config.getSelectedCount() > 0) {
             elements.add(
-                    text("  Press / to search, x to clear all").fg(DIM_GRAY).italic()
+                    text("  Press / to search, x to clear all").fg(OVERLAY).italic()
             );
         } else {
             elements.add(
-                    text("  Press / to search dependencies").fg(DIM_GRAY).italic()
+                    text("  Press / to search dependencies").fg(OVERLAY).italic()
             );
         }
         elements.add(text(""));
@@ -280,7 +280,7 @@ public class MainScreen {
         }
         return panel(depTitle,
                 column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(focusArea == FocusArea.DEPENDENCIES ? BRIGHT_GREEN : DIM_GRAY)
+        ).rounded().borderColor(focusArea == FocusArea.DEPENDENCIES ? LAVENDER : OVERLAY)
                 .fill()
                 .id("dep-picker");
     }
@@ -288,25 +288,25 @@ public class MainScreen {
     private Element renderActionBar() {
         return row(
                 text("  "),
-                text("[ Generate g ]").fg(SPRING_GREEN).bold(),
+                text("[ Generate g ]").fg(BLUE).bold(),
                 text("  "),
                 text("[ Explore e ]").fg(Color.CYAN),
                 text("  "),
-                text("[ Quit q ]").fg(DIM_GRAY),
+                text("[ Quit q ]").fg(OVERLAY),
                 spacer()
         ).length(1);
     }
 
     private Element renderFooter() {
         return row(
-                text("  Tab").fg(Color.WHITE), text(":navigate  ").fg(DIM_GRAY),
-                text("/").fg(Color.WHITE), text(":search  ").fg(DIM_GRAY),
-                text("Space").fg(Color.WHITE), text(":toggle  ").fg(DIM_GRAY),
-                text("\u2190\u2192").fg(Color.WHITE), text(":change  ").fg(DIM_GRAY),
-                text("c").fg(Color.WHITE), text(":filter  ").fg(DIM_GRAY),
-                text("x").fg(Color.WHITE), text(":clear  ").fg(DIM_GRAY),
-                text("?").fg(Color.WHITE), text(":help  ").fg(DIM_GRAY),
-                text("q").fg(Color.WHITE), text(":quit").fg(DIM_GRAY),
+                text("  Tab").fg(Color.WHITE), text(":navigate  ").fg(OVERLAY),
+                text("/").fg(Color.WHITE), text(":search  ").fg(OVERLAY),
+                text("Space").fg(Color.WHITE), text(":toggle  ").fg(OVERLAY),
+                text("\u2190\u2192").fg(Color.WHITE), text(":change  ").fg(OVERLAY),
+                text("c").fg(Color.WHITE), text(":filter  ").fg(OVERLAY),
+                text("x").fg(Color.WHITE), text(":clear  ").fg(OVERLAY),
+                text("?").fg(Color.WHITE), text(":help  ").fg(OVERLAY),
+                text("q").fg(Color.WHITE), text(":quit").fg(OVERLAY),
                 spacer()
         ).length(1);
     }

@@ -18,10 +18,10 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class ExploreScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color CYAN = Color.CYAN;
-    private static final Color YELLOW = Color.YELLOW;
-    private static final Color COMMENT_GRAY = Color.rgb(100, 100, 100);
+    private static final Color BLUE = Color.rgb(137, 180, 250);
+    private static final Color CYAN = Color.rgb(137, 220, 235);
+    private static final Color YELLOW = Color.rgb(249, 226, 175);
+    private static final Color SURFACE2 = Color.rgb(108, 112, 134);
 
     public enum BuildFileType {
         MAVEN("pom.xml", "maven-project"),
@@ -147,11 +147,11 @@ public class ExploreScreen {
         return column(
                 panel(title,
                         contentArea
-                ).rounded().borderColor(SPRING_GREEN),
+                ).rounded().borderColor(BLUE),
                 row(
                         text("  " + scrollInfo + "  ").fg(Color.DARK_GRAY),
                         lineGauge((double) percent / 100.0)
-                                .fg(SPRING_GREEN)
+                                .fg(BLUE)
                                 .fill(3),
                         text("  " + percentStr + "  ").fg(Color.DARK_GRAY)
                 ).length(1)
@@ -196,7 +196,7 @@ public class ExploreScreen {
         String indent = line.substring(0, line.length() - trimmed.length());
 
         if (trimmed.startsWith("<!--")) {
-            parts.add(text(line).fg(COMMENT_GRAY).italic());
+            parts.add(text(line).fg(SURFACE2).italic());
             return;
         }
 
@@ -213,7 +213,7 @@ public class ExploreScreen {
             if (tagMatcher.start() > lastEnd) {
                 parts.add(text(trimmed.substring(lastEnd, tagMatcher.start())).fg(Color.WHITE));
             }
-            parts.add(text(tagMatcher.group(1)).fg(SPRING_GREEN));
+            parts.add(text(tagMatcher.group(1)).fg(BLUE));
 
             String attrPart = tagMatcher.group(2);
             if (!attrPart.isEmpty()) {
@@ -233,7 +233,7 @@ public class ExploreScreen {
                 }
             }
 
-            parts.add(text(tagMatcher.group(3)).fg(SPRING_GREEN));
+            parts.add(text(tagMatcher.group(3)).fg(BLUE));
             lastEnd = tagMatcher.end();
         }
 
@@ -252,11 +252,11 @@ public class ExploreScreen {
         String indent = line.substring(0, line.length() - trimmed.length());
 
         if (trimmed.startsWith("//")) {
-            parts.add(text(line).fg(COMMENT_GRAY).italic());
+            parts.add(text(line).fg(SURFACE2).italic());
             return;
         }
         if (trimmed.startsWith("/*") || trimmed.startsWith("*") || trimmed.startsWith("*/")) {
-            parts.add(text(line).fg(COMMENT_GRAY).italic());
+            parts.add(text(line).fg(SURFACE2).italic());
             return;
         }
 
@@ -277,7 +277,7 @@ public class ExploreScreen {
             }
 
             if (c == '/' && i + 1 < trimmed.length() && trimmed.charAt(i + 1) == '/') {
-                parts.add(text(trimmed.substring(i)).fg(COMMENT_GRAY).italic());
+                parts.add(text(trimmed.substring(i)).fg(SURFACE2).italic());
                 i = trimmed.length();
                 continue;
             }
@@ -289,7 +289,7 @@ public class ExploreScreen {
                 }
                 String word = trimmed.substring(i, end);
                 if (GRADLE_KEYWORDS.contains(word)) {
-                    parts.add(text(word).fg(SPRING_GREEN));
+                    parts.add(text(word).fg(BLUE));
                 } else {
                     parts.add(text(word).fg(Color.WHITE));
                 }
@@ -307,11 +307,11 @@ public class ExploreScreen {
         String indent = line.substring(0, line.length() - trimmed.length());
 
         if (trimmed.startsWith("//")) {
-            parts.add(text(line).fg(COMMENT_GRAY).italic());
+            parts.add(text(line).fg(SURFACE2).italic());
             return;
         }
         if (trimmed.startsWith("/*") || trimmed.startsWith("*") || trimmed.startsWith("*/")) {
-            parts.add(text(line).fg(COMMENT_GRAY).italic());
+            parts.add(text(line).fg(SURFACE2).italic());
             return;
         }
 
@@ -345,7 +345,7 @@ public class ExploreScreen {
             }
 
             if (c == '/' && i + 1 < trimmed.length() && trimmed.charAt(i + 1) == '/') {
-                parts.add(text(trimmed.substring(i)).fg(COMMENT_GRAY).italic());
+                parts.add(text(trimmed.substring(i)).fg(SURFACE2).italic());
                 i = trimmed.length();
                 continue;
             }
@@ -357,7 +357,7 @@ public class ExploreScreen {
                 }
                 String word = trimmed.substring(i, end);
                 if (JAVA_KEYWORDS.contains(word)) {
-                    parts.add(text(word).fg(SPRING_GREEN));
+                    parts.add(text(word).fg(BLUE));
                 } else {
                     parts.add(text(word).fg(Color.WHITE));
                 }
@@ -375,7 +375,7 @@ public class ExploreScreen {
         String indent = line.substring(0, line.length() - trimmed.length());
 
         if (trimmed.startsWith("#")) {
-            parts.add(text(line).fg(COMMENT_GRAY).italic());
+            parts.add(text(line).fg(SURFACE2).italic());
             return;
         }
 

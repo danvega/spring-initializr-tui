@@ -12,8 +12,8 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class SplashScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color DIM_GREEN = Color.rgb(80, 130, 50);
+    private static final Color BLUE = Color.rgb(137, 180, 250);
+    private static final Color OVERLAY = Color.rgb(147, 153, 178);
 
     private static final String[] BANNER_LINES = {
         "  .   ____             _",
@@ -41,15 +41,15 @@ public class SplashScreen {
 
     public Element render() {
         Element[] bannerElements = Arrays.stream(BANNER_LINES)
-                .map(line -> text(line).fg(SPRING_GREEN).bold().length(1))
+                .map(line -> text(line).fg(BLUE).bold().length(1))
                 .toArray(Element[]::new);
 
         return column(
                 spacer(),
                 column(bannerElements),
-                text(buildSubtitle()).fg(DIM_GREEN).length(1),
+                text(buildSubtitle()).fg(OVERLAY).length(1),
                 spacer(),
-                gauge(progress).fg(SPRING_GREEN).label(statusMessage),
+                gauge(progress).fg(BLUE).label(statusMessage),
                 spacer()
         ).id("splash");
     }

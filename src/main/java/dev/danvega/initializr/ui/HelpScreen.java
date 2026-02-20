@@ -10,14 +10,14 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class HelpScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color DIM_GRAY = Color.DARK_GRAY;
+    private static final Color BLUE = Color.rgb(137, 180, 250);
+    private static final Color OVERLAY = Color.rgb(147, 153, 178);
 
     public Element render() {
         return column(
                 panel("Help",
                         column(
-                                text("  Main Screen").fg(SPRING_GREEN).bold(),
+                                text("  Main Screen").fg(BLUE).bold(),
                                 text(""),
                                 shortcutRow("Tab / Shift+Tab", "Navigate between fields"),
                                 shortcutRow("\u2190 \u2192", "Cycle option values"),
@@ -31,7 +31,7 @@ public class HelpScreen {
                                 shortcutRow("?", "Show this help screen"),
                                 shortcutRow("q / Ctrl+C", "Quit"),
                                 text(""),
-                                text("  Explore Screen").fg(SPRING_GREEN).bold(),
+                                text("  Explore Screen").fg(BLUE).bold(),
                                 text(""),
                                 shortcutRow("\u2190 \u2192", "Switch between files"),
                                 shortcutRow("\u2191 \u2193", "Scroll file content"),
@@ -39,7 +39,7 @@ public class HelpScreen {
                                 shortcutRow("Enter", "Generate project"),
                                 shortcutRow("Esc", "Return to main screen"),
                                 text(""),
-                                text("  Generate Screen").fg(SPRING_GREEN).bold(),
+                                text("  Generate Screen").fg(BLUE).bold(),
                                 text(""),
                                 shortcutRow("\u2191 \u2193", "Select IDE"),
                                 shortcutRow("Enter", "Launch selected IDE"),
@@ -48,21 +48,21 @@ public class HelpScreen {
                                 text(""),
                                 text(""),
                                 row(
-                                        text("  Press ").fg(DIM_GRAY),
+                                        text("  Press ").fg(OVERLAY),
                                         text("Esc").fg(Color.WHITE).bold(),
-                                        text(" or ").fg(DIM_GRAY),
+                                        text(" or ").fg(OVERLAY),
                                         text("?").fg(Color.WHITE).bold(),
-                                        text(" to close").fg(DIM_GRAY)
+                                        text(" to close").fg(OVERLAY)
                                 )
                         )
-                ).rounded().borderColor(SPRING_GREEN)
+                ).rounded().borderColor(BLUE)
         );
     }
 
     private Element shortcutRow(String key, String description) {
         return row(
                 text(String.format("    %-18s", key)).fg(Color.WHITE).bold(),
-                text(description).fg(DIM_GRAY)
+                text(description).fg(OVERLAY)
         );
     }
 }
