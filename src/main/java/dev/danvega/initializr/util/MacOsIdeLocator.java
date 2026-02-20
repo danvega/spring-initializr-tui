@@ -32,19 +32,50 @@ public final class MacOsIdeLocator implements OsIdeLocator {
         checkMacApp("/Applications/Apache NetBeans.app", "Apache NetBeans", ides);
         checkPathCommand("netbeans", "Apache NetBeans", ides);
 
+        checkPathCommand("nvim", "Neovim", ides);
+
         return ides;
     }
 
     @Override
     public void launch(DetectedIde ide, Path projectDir) throws IOException {
         ProcessBuilder pb;
-        if (ide.path() != null && ide.path().toString().endsWith(".app")) {
-            pb = new ProcessBuilder("open", "-a", ide.path().toString(), projectDir.toString());
+        if ("nvim".equals(ide.command())) {
+            pb = buildNvimCommand(ide, projectDir);
         } else {
             pb = new ProcessBuilder(ide.command(), projectDir.toString());
         }
         pb.inheritIO();
         pb.start();
+    }
+
+    private ProcessBuilder buildNvimCommand(DetectedIde ide, Path projectDir) {
+        // 1. Try xdg-terminal-exec (modern XDG standard, Wayland-friendly)
+        if (commandExists("xdg-terminal-exec")) {
+            return new ProcessBuilder("setsid", "xdg-terminal-exec",
+                    ide.command(), projectDir.toString(), ">/dev/null", "2>&1", "< /dev/null &");
+        }
+
+        // 3. Try x-terminal-emulator (Debian/Ubuntu alternatives system)
+        if (commandExists("x-terminal-emulator")) {
+            return new ProcessBuilder("setsid", "x-terminal-emulator", "-e",
+                    ide.command(), projectDir.toString(), ">/dev/null 2>&1", "< /dev/null &");
+        }
+
+        throw new IllegalStateException(
+                "No terminal emulator found. Please install xdg-terminal-exec " +
+                        "or x-terminal-emulator");
+    }
+
+    private boolean commandExists(String command) {
+        try {
+            return new ProcessBuilder("which", command)
+                    .redirectErrorStream(true)
+                    .start()
+                    .waitFor() == 0;
+        } catch (IOException | InterruptedException e) {
+            return false;
+        }
     }
 
     private void checkMacApp(String appPath, String name, List<DetectedIde> ides) {
