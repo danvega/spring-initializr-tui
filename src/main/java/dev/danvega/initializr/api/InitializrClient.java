@@ -20,6 +20,7 @@ import java.util.StringJoiner;
 public class InitializrClient {
 
     private static final String BASE_URL = "https://start.spring.io";
+    private static final String USER_AGENT = "SpringInitializrTUI";
     private final HttpClient httpClient;
     private final JsonMapper jsonMapper;
 
@@ -36,6 +37,7 @@ public class InitializrClient {
     public InitializrMetadata.Metadata fetchMetadata() throws IOException, InterruptedException {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL))
+                .header("User-Agent", USER_AGENT)
                 .header("Accept", "application/json")
                 .GET()
                 .build();
