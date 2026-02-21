@@ -209,8 +209,8 @@ public class SpringInitializrTui extends ToolkitApp {
             return EventResult.HANDLED;
         }
 
-        // Arrow keys — Up/Down also navigate between fields
-        if (event.isUp()) {
+        // Arrow keys & Vim bindings — Up/Down also navigate between fields
+        if (event.isUp() || event.isCharIgnoreCase('k')) {
             if (mainScreen.getFocusArea() == MainScreen.FocusArea.DEPENDENCIES) {
                 if (mainScreen.getDependencyPicker().isAtTop()) {
                     mainScreen.focusPrevious();
@@ -222,7 +222,7 @@ public class SpringInitializrTui extends ToolkitApp {
             }
             return EventResult.HANDLED;
         }
-        if (event.isDown()) {
+        if (event.isDown() || event.isCharIgnoreCase('j')) {
             if (mainScreen.getFocusArea() == MainScreen.FocusArea.DEPENDENCIES) {
                 mainScreen.getDependencyPicker().moveDown();
             } else {
@@ -230,11 +230,11 @@ public class SpringInitializrTui extends ToolkitApp {
             }
             return EventResult.HANDLED;
         }
-        if (event.isLeft()) {
+        if (event.isLeft() || event.isCharIgnoreCase('h')) {
             mainScreen.cycleOption(-1);
             return EventResult.HANDLED;
         }
-        if (event.isRight()) {
+        if (event.isRight() || event.isCharIgnoreCase('l')) {
             mainScreen.cycleOption(1);
             return EventResult.HANDLED;
         }
@@ -281,27 +281,27 @@ public class SpringInitializrTui extends ToolkitApp {
             currentScreen = Screen.MAIN;
             return EventResult.HANDLED;
         }
-        if (event.isLeft()) {
+        if (event.isLeft() || event.isCharIgnoreCase('h')) {
             exploreScreen.previousFile();
             return EventResult.HANDLED;
         }
-        if (event.isRight()) {
+        if (event.isRight() || event.isCharIgnoreCase('l')) {
             exploreScreen.nextFile();
             return EventResult.HANDLED;
         }
-        if (event.isUp()) {
+        if (event.isUp() || event.isCharIgnoreCase('k')) {
             exploreScreen.scrollUp();
             return EventResult.HANDLED;
         }
-        if (event.isDown()) {
+        if (event.isDown() || event.isCharIgnoreCase('j')) {
             exploreScreen.scrollDown();
             return EventResult.HANDLED;
         }
-        if (event.isPageUp()) {
+        if (event.isPageUp() || (event.hasCtrl() && event.isCharIgnoreCase('u'))) {
             exploreScreen.pageUp();
             return EventResult.HANDLED;
         }
-        if (event.isPageDown()) {
+        if (event.isPageDown() || (event.hasCtrl() && event.isCharIgnoreCase('d'))) {
             exploreScreen.pageDown();
             return EventResult.HANDLED;
         }
@@ -319,11 +319,11 @@ public class SpringInitializrTui extends ToolkitApp {
             return EventResult.HANDLED;
         }
         if (generateScreen.getState() == GenerateScreen.State.SUCCESS) {
-            if (event.isUp()) {
+            if (event.isUp() || event.isCharIgnoreCase('k')) {
                 generateScreen.moveIdeUp();
                 return EventResult.HANDLED;
             }
-            if (event.isDown()) {
+            if (event.isDown() || event.isCharIgnoreCase('j')) {
                 generateScreen.moveIdeDown();
                 return EventResult.HANDLED;
             }
