@@ -73,7 +73,11 @@ public class ConfigStore {
         private String lastPackaging = "jar";
         private String lastApplicationFormat = "properties";
         private String postGenerateCommand = "";
+        private String theme = "spring";
         private List<List<String>> recentDependencies = new ArrayList<>();
+
+        public String getTheme() { return theme; }
+        public void setTheme(String v) { this.theme = v; }
 
         public String getPostGenerateCommand() { return postGenerateCommand; }
         public void setPostGenerateCommand(String v) { this.postGenerateCommand = v; }
