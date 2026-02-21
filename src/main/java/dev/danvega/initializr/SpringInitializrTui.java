@@ -50,6 +50,9 @@ public class SpringInitializrTui extends ToolkitApp {
     private volatile String pendingHookCommand;
     private volatile Path pendingHookDir;
 
+    // "Open in Terminal" — print cd command after TUI exits
+    private volatile Path pendingTerminalDir;
+
     @Override
     protected void onStart() {
         ThemeManager.setTheme(configStore.load().getTheme());
@@ -491,7 +494,13 @@ public class SpringInitializrTui extends ToolkitApp {
         var projectDir = generateScreen.getProjectDir();
         if (ide != null && projectDir != null) {
             try {
-                IdeLauncher.launch(ide, projectDir);
+                boolean isTerminal = GenerateScreen.TERMINAL_SENTINEL.equals(ide.command());
+
+                if (isTerminal) {
+                    pendingTerminalDir = projectDir;
+                } else {
+                    IdeLauncher.launch(ide, projectDir);
+                }
 
                 // Store post-generate hook info before quitting
                 var prefs = configStore.load();
@@ -617,6 +626,15 @@ public class SpringInitializrTui extends ToolkitApp {
     public static void main(String[] args) throws Exception {
         var app = new SpringInitializrTui();
         app.run();
+
+        // Print project directory for "Open in Terminal" option
+        if (app.pendingTerminalDir != null) {
+            System.out.println();
+            System.out.println("Project generated at: " + app.pendingTerminalDir);
+            System.out.println();
+            System.out.println("  cd " + app.pendingTerminalDir);
+            System.out.println();
+        }
 
         // Execute post-generate hook after TUI has fully exited and terminal is restored
         if (app.pendingHookCommand != null && app.pendingHookDir != null) {

@@ -32,10 +32,14 @@ public class GenerateScreen {
         this.statusMessage = message;
     }
 
+    public static final String TERMINAL_SENTINEL = "__terminal__";
+
     public void setSuccess(Path projectDir, List<IdeLauncher.DetectedIde> ides) {
         this.state = State.SUCCESS;
         this.projectDir = projectDir;
-        this.detectedIdes = ides;
+        var list = new ArrayList<>(ides);
+        list.add(new IdeLauncher.DetectedIde("Open in Terminal", TERMINAL_SENTINEL, null));
+        this.detectedIdes = list;
         this.progress = 1.0;
     }
 
@@ -96,7 +100,7 @@ public class GenerateScreen {
 
         // IDE selection
         if (!detectedIdes.isEmpty()) {
-            elements.add(text("  Open in IDE:").fg(t.text()).bold());
+            elements.add(text("  Open with:").fg(t.text()).bold());
             for (int i = 0; i < detectedIdes.size(); i++) {
                 var ide = detectedIdes.get(i);
                 String prefix = i == selectedIdeIndex ? "    \u25b8 " : "      ";
@@ -114,9 +118,12 @@ public class GenerateScreen {
         }
 
         elements.add(text(""));
+        var selectedIde = getSelectedIde();
+        boolean isTerminal = selectedIde != null && TERMINAL_SENTINEL.equals(selectedIde.command());
+        String openTarget = isTerminal ? "Open in Terminal" : "Open" + (selectedIde != null ? " in " + selectedIde.name() : "");
         String openLabel = postGenerateCommand.isBlank()
-                ? "  [Enter] Open  "
-                : "  [Enter] Open + run " + postGenerateCommand + "  ";
+                ? "  [Enter] " + openTarget + "  "
+                : "  [Enter] " + openTarget + " + run " + postGenerateCommand + "  ";
         elements.add(
                 row(
                         text(openLabel).fg(t.primary()),

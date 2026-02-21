@@ -66,8 +66,9 @@ class GenerateScreenTest {
         screen.setSuccess(Path.of("/tmp"), ides);
 
         screen.moveIdeDown();
-        screen.moveIdeDown(); // past end, should stay at last
-        assertThat(screen.getSelectedIde().name()).isEqualTo("VS Code");
+        screen.moveIdeDown();
+        screen.moveIdeDown(); // past end, should stay at last (terminal option)
+        assertThat(screen.getSelectedIde().name()).isEqualTo("Open in Terminal");
     }
 
     @Test
@@ -87,8 +88,10 @@ class GenerateScreenTest {
     }
 
     @Test
-    void getSelectedIde_returnsNullWhenNoIdes() {
+    void getSelectedIde_returnsTerminalWhenNoIdes() {
         screen.setSuccess(Path.of("/tmp"), List.of());
-        assertThat(screen.getSelectedIde()).isNull();
+        // Even with no real IDEs, the terminal option is always present
+        assertThat(screen.getSelectedIde()).isNotNull();
+        assertThat(screen.getSelectedIde().name()).isEqualTo("Open in Terminal");
     }
 }
