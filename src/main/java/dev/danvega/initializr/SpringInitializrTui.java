@@ -6,7 +6,6 @@ import dev.danvega.initializr.model.ProjectConfig;
 import dev.danvega.initializr.ui.*;
 import dev.danvega.initializr.util.ConfigStore;
 import dev.danvega.initializr.util.IdeLauncher;
-import dev.tamboui.style.Color;
 import dev.tamboui.tui.event.KeyCode;
 import dev.tamboui.tui.event.KeyEvent;
 import dev.tamboui.toolkit.app.ToolkitApp;
@@ -29,8 +28,6 @@ import static dev.tamboui.toolkit.Toolkit.*;
  * Interactive terminal client for start.spring.io built with TamboUI.
  */
 public class SpringInitializrTui extends ToolkitApp {
-
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
 
     enum Screen { SPLASH, MAIN, EXPLORE, GENERATE, HELP }
 
@@ -55,6 +52,8 @@ public class SpringInitializrTui extends ToolkitApp {
 
     @Override
     protected void onStart() {
+        ThemeManager.setTheme(configStore.load().getTheme());
+
         CompletableFuture.runAsync(() -> {
             try {
                 splashProgress = 0.3;
@@ -93,8 +92,8 @@ public class SpringInitializrTui extends ToolkitApp {
     protected Element render() {
         Element content = switch (currentScreen) {
             case SPLASH -> new SplashScreen(splashProgress, splashMessage).render();
-            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(SPRING_GREEN);
-            case EXPLORE -> exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(SPRING_GREEN);
+            case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(ThemeManager.current().primary());
+            case EXPLORE -> exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(ThemeManager.current().primary());
             case GENERATE -> generateScreen.render();
             case HELP -> helpScreen.render();
         };
@@ -586,6 +585,7 @@ public class SpringInitializrTui extends ToolkitApp {
     }
 
     private Element renderExploreScreen() {
+        var t = ThemeManager.current();
         String summary = String.format(
                 " Group: %s  Artifact: %s  Boot: %s  Java: %s  Dependencies: %d",
                 config.getGroupId(), config.getArtifactId(),
@@ -596,19 +596,19 @@ public class SpringInitializrTui extends ToolkitApp {
         return column(
                 panel("",
                         row(
-                                text("  SPRING INITIALIZR").fg(SPRING_GREEN).bold(),
+                                text("  SPRING INITIALIZR").fg(t.primary()).bold(),
                                 spacer(),
-                                text("Explore  ").fg(Color.CYAN)
+                                text("Explore  ").fg(t.secondary())
                         )
-                ).rounded().borderColor(SPRING_GREEN).length(3),
-                row(text(summary).fg(Color.DARK_GRAY)).length(1),
+                ).rounded().borderColor(t.primary()).length(3),
+                row(text(summary).fg(t.textDim())).length(1),
                 exploreScreen.render(26),
                 row(
                         text("  "),
-                        text("\u2190\u2192").fg(Color.WHITE), text(":files  ").fg(Color.DARK_GRAY),
-                        text("\u2191\u2193").fg(Color.WHITE), text(":scroll  ").fg(Color.DARK_GRAY),
-                        text("Enter").fg(Color.WHITE), text(":generate  ").fg(Color.DARK_GRAY),
-                        text("Esc").fg(Color.WHITE), text(":back  ").fg(Color.DARK_GRAY),
+                        text("\u2190\u2192").fg(t.text()), text(":files  ").fg(t.textDim()),
+                        text("\u2191\u2193").fg(t.text()), text(":scroll  ").fg(t.textDim()),
+                        text("Enter").fg(t.text()), text(":generate  ").fg(t.textDim()),
+                        text("Esc").fg(t.text()), text(":back  ").fg(t.textDim()),
                         spacer()
                 ).length(1)
         );

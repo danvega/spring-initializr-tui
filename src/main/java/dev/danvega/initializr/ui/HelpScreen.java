@@ -10,14 +10,13 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class HelpScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color DIM_GRAY = Color.DARK_GRAY;
-
     public Element render() {
+        var t = ThemeManager.current();
+
         return column(
                 panel("Help",
                         column(
-                                text("  Main Screen").fg(SPRING_GREEN).bold(),
+                                text("  Main Screen").fg(t.primary()).bold(),
                                 text(""),
                                 shortcutRow("Tab / Shift+Tab", "Navigate between fields"),
                                 shortcutRow("\u2190 \u2192", "Cycle option values"),
@@ -31,7 +30,7 @@ public class HelpScreen {
                                 shortcutRow("?", "Show this help screen"),
                                 shortcutRow("q / Ctrl+C", "Quit"),
                                 text(""),
-                                text("  Explore Screen").fg(SPRING_GREEN).bold(),
+                                text("  Explore Screen").fg(t.primary()).bold(),
                                 text(""),
                                 shortcutRow("\u2190 \u2192", "Switch between files"),
                                 shortcutRow("\u2191 \u2193", "Scroll file content"),
@@ -39,7 +38,7 @@ public class HelpScreen {
                                 shortcutRow("Enter", "Generate project"),
                                 shortcutRow("Esc", "Return to main screen"),
                                 text(""),
-                                text("  Generate Screen").fg(SPRING_GREEN).bold(),
+                                text("  Generate Screen").fg(t.primary()).bold(),
                                 text(""),
                                 shortcutRow("\u2191 \u2193", "Select IDE"),
                                 shortcutRow("Enter", "Launch selected IDE"),
@@ -48,21 +47,22 @@ public class HelpScreen {
                                 text(""),
                                 text(""),
                                 row(
-                                        text("  Press ").fg(DIM_GRAY),
-                                        text("Esc").fg(Color.WHITE).bold(),
-                                        text(" or ").fg(DIM_GRAY),
-                                        text("?").fg(Color.WHITE).bold(),
-                                        text(" to close").fg(DIM_GRAY)
+                                        text("  Press ").fg(t.textDim()),
+                                        text("Esc").fg(t.text()).bold(),
+                                        text(" or ").fg(t.textDim()),
+                                        text("?").fg(t.text()).bold(),
+                                        text(" to close").fg(t.textDim())
                                 )
                         )
-                ).rounded().borderColor(SPRING_GREEN)
+                ).rounded().borderColor(t.primary())
         );
     }
 
     private Element shortcutRow(String key, String description) {
+        var t = ThemeManager.current();
         return row(
-                text(String.format("    %-18s", key)).fg(Color.WHITE).bold(),
-                text(description).fg(DIM_GRAY)
+                text(String.format("    %-18s", key)).fg(t.text()).bold(),
+                text(description).fg(t.textDim())
         );
     }
 }

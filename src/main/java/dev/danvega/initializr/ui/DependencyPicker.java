@@ -15,10 +15,6 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class DependencyPicker {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color DIM_GRAY = Color.DARK_GRAY;
-    private static final Color RECENT_GOLD = Color.rgb(255, 200, 60);
-
     private final List<InitializrMetadata.DependencyCategory> categories;
     private final ProjectConfig config;
     private final Map<String, InitializrMetadata.Dependency> depLookup;
@@ -273,6 +269,7 @@ public class DependencyPicker {
     }
 
     public Element render() {
+        var t = ThemeManager.current();
         var elements = new ArrayList<Element>();
 
         // Selected summary
@@ -280,11 +277,11 @@ public class DependencyPicker {
         if (!selected.isEmpty()) {
             elements.add(
                     text("  Selected: " + String.join(", ", selected) + "  (" + selected.size() + ")")
-                            .fg(SPRING_GREEN).bold()
+                            .fg(t.primary()).bold()
             );
         } else {
             elements.add(
-                    text("  Search or browse to add dependencies").fg(DIM_GRAY).italic()
+                    text("  Search or browse to add dependencies").fg(t.textDim()).italic()
             );
         }
 
@@ -300,7 +297,7 @@ public class DependencyPicker {
                 boolean isRecent = item.categoryName().startsWith("\u2605");
                 elements.add(
                         text("  > " + item.categoryName())
-                                .fg(isRecent ? RECENT_GOLD : Color.CYAN).bold()
+                                .fg(isRecent ? t.accent() : t.secondary()).bold()
                 );
             } else {
                 var dep = item.dependency();
@@ -317,11 +314,11 @@ public class DependencyPicker {
                     String label = prefix + checkmark + depName;
                     var line = text(label);
                     if (isCursor) {
-                        line = line.fg(Color.WHITE).bold();
+                        line = line.fg(t.text()).bold();
                     } else if (isSelected) {
-                        line = line.fg(SPRING_GREEN);
+                        line = line.fg(t.primary());
                     } else {
-                        line = line.fg(Color.WHITE);
+                        line = line.fg(t.text());
                     }
                     elements.add(line);
                 }
@@ -329,7 +326,7 @@ public class DependencyPicker {
         }
 
         if (flatItems.isEmpty()) {
-            elements.add(text("  No dependencies match your search").fg(DIM_GRAY).italic());
+            elements.add(text("  No dependencies match your search").fg(t.textDim()).italic());
         }
 
         return column(elements.toArray(Element[]::new));
@@ -337,10 +334,11 @@ public class DependencyPicker {
 
     private Element renderHighlightedDep(String prefix, String checkmark, String name,
                                           int[] matchPositions, boolean isCursor, boolean isSelected) {
+        var t = ThemeManager.current();
         // Build the name with highlighted chars using row of text segments
         var parts = new ArrayList<Element>();
         String beforeName = prefix + checkmark;
-        Color baseColor = isCursor ? Color.WHITE : (isSelected ? SPRING_GREEN : Color.WHITE);
+        Color baseColor = isCursor ? t.text() : (isSelected ? t.primary() : t.text());
 
         var prefixEl = text(beforeName).fg(baseColor);
         if (isCursor) prefixEl = prefixEl.bold();
@@ -364,7 +362,7 @@ public class DependencyPicker {
                 // Flush segment
                 var segment = text(sb.toString());
                 if (currentHighlight) {
-                    segment = segment.fg(SPRING_GREEN).bold();
+                    segment = segment.fg(t.primary()).bold();
                 } else {
                     segment = segment.fg(baseColor);
                     if (isCursor) segment = segment.bold();
@@ -379,7 +377,7 @@ public class DependencyPicker {
         if (!sb.isEmpty()) {
             var segment = text(sb.toString());
             if (currentHighlight) {
-                segment = segment.fg(SPRING_GREEN).bold();
+                segment = segment.fg(t.primary()).bold();
             } else {
                 segment = segment.fg(baseColor);
                 if (isCursor) segment = segment.bold();

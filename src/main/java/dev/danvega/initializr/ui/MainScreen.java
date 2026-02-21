@@ -15,10 +15,6 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class MainScreen {
 
-    private static final Color SPRING_GREEN = Color.rgb(109, 179, 63);
-    private static final Color BRIGHT_GREEN = Color.rgb(143, 213, 96);
-    private static final Color DIM_GRAY = Color.DARK_GRAY;
-
     public enum FocusArea { PROJECT_TYPE, LANGUAGE, BOOT_VERSION, GROUP, ARTIFACT, NAME, DESCRIPTION, PACKAGING, JAVA_VERSION, APPLICATION_FORMAT, DEPENDENCIES }
 
     private final InitializrMetadata.Metadata metadata;
@@ -170,16 +166,18 @@ public class MainScreen {
     }
 
     private Element renderHeader() {
+        var t = ThemeManager.current();
         return panel("",
                 row(
-                        text("  SPRING INITIALIZR").fg(SPRING_GREEN).bold(),
+                        text("  SPRING INITIALIZR").fg(t.primary()).bold(),
                         spacer(),
-                        text("v" + appVersion() + "  ").fg(DIM_GRAY)
+                        text("v" + appVersion() + "  ").fg(t.textDim())
                 )
-        ).rounded().borderColor(SPRING_GREEN).length(3).id("header");
+        ).rounded().borderColor(t.primary()).length(3).id("header");
     }
 
     private Element renderConfigForm() {
+        var t = ThemeManager.current();
         var elements = new ArrayList<Element>();
 
         // Project type (radio-style)
@@ -207,13 +205,14 @@ public class MainScreen {
 
         return panel("Configuration",
                 column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(focusArea != FocusArea.DEPENDENCIES ? BRIGHT_GREEN : DIM_GRAY).id("config-form");
+        ).rounded().borderColor(focusArea != FocusArea.DEPENDENCIES ? t.primaryBright() : t.textDim()).id("config-form");
     }
 
     private Element renderSelectRow(String label, InitializrMetadata.SelectField field, String currentValue, boolean focused) {
+        var t = ThemeManager.current();
         var parts = new ArrayList<Element>();
         String paddedLabel = String.format("  %-12s", label);
-        parts.add(text(paddedLabel).fg(focused ? Color.WHITE : DIM_GRAY).bold());
+        parts.add(text(paddedLabel).fg(focused ? t.text() : t.textDim()).bold());
 
         if (field != null) {
             for (var option : field.values()) {
@@ -221,11 +220,11 @@ public class MainScreen {
                 String marker = selected ? "\u25cf " : "\u25cb ";
                 var optText = text(marker + displayName(option) + "  ");
                 if (selected && focused) {
-                    optText = optText.fg(SPRING_GREEN).bold();
+                    optText = optText.fg(t.primary()).bold();
                 } else if (selected) {
-                    optText = optText.fg(SPRING_GREEN);
+                    optText = optText.fg(t.primary());
                 } else {
-                    optText = optText.fg(DIM_GRAY);
+                    optText = optText.fg(t.textDim());
                 }
                 parts.add(optText);
             }
@@ -233,40 +232,42 @@ public class MainScreen {
 
         if (focused) {
             parts.add(spacer());
-            parts.add(text("\u25c0 \u25b6 ").fg(DIM_GRAY));
+            parts.add(text("\u25c0 \u25b6 ").fg(t.textDim()));
         }
 
         return row(parts.toArray(Element[]::new));
     }
 
     private Element renderTextRow(String label, String value, boolean focused) {
+        var t = ThemeManager.current();
         String paddedLabel = String.format("  %-12s", label);
         String displayValue = focused ? "[ " + value + "_ ]" : "[ " + value + " ]";
 
         return row(
-                text(paddedLabel).fg(focused ? Color.WHITE : DIM_GRAY).bold(),
-                text(displayValue).fg(focused ? SPRING_GREEN : Color.WHITE)
+                text(paddedLabel).fg(focused ? t.text() : t.textDim()).bold(),
+                text(displayValue).fg(focused ? t.primary() : t.text())
         );
     }
 
     private Element renderDependencyPanel() {
+        var t = ThemeManager.current();
         var elements = new ArrayList<Element>();
 
         // Search bar
         if (searchMode) {
             elements.add(
                     row(
-                            text("  Search: ").fg(Color.WHITE).bold(),
-                            text("[ " + searchBuffer + "_ ]").fg(SPRING_GREEN)
+                            text("  Search: ").fg(t.text()).bold(),
+                            text("[ " + searchBuffer + "_ ]").fg(t.primary())
                     )
             );
         } else if (config.getSelectedCount() > 0) {
             elements.add(
-                    text("  Press / to search, x to clear all").fg(DIM_GRAY).italic()
+                    text("  Press / to search, x to clear all").fg(t.textDim()).italic()
             );
         } else {
             elements.add(
-                    text("  Press / to search dependencies").fg(DIM_GRAY).italic()
+                    text("  Press / to search dependencies").fg(t.textDim()).italic()
             );
         }
         elements.add(text(""));
@@ -280,33 +281,35 @@ public class MainScreen {
         }
         return panel(depTitle,
                 column(elements.toArray(Element[]::new))
-        ).rounded().borderColor(focusArea == FocusArea.DEPENDENCIES ? BRIGHT_GREEN : DIM_GRAY)
+        ).rounded().borderColor(focusArea == FocusArea.DEPENDENCIES ? t.primaryBright() : t.textDim())
                 .fill()
                 .id("dep-picker");
     }
 
     private Element renderActionBar() {
+        var t = ThemeManager.current();
         return row(
                 text("  "),
-                text("[ Generate g ]").fg(SPRING_GREEN).bold(),
+                text("[ Generate g ]").fg(t.primary()).bold(),
                 text("  "),
-                text("[ Explore e ]").fg(Color.CYAN),
+                text("[ Explore e ]").fg(t.secondary()),
                 text("  "),
-                text("[ Quit q ]").fg(DIM_GRAY),
+                text("[ Quit q ]").fg(t.textDim()),
                 spacer()
         ).length(1);
     }
 
     private Element renderFooter() {
+        var t = ThemeManager.current();
         return row(
-                text("  Tab").fg(Color.WHITE), text(":navigate  ").fg(DIM_GRAY),
-                text("/").fg(Color.WHITE), text(":search  ").fg(DIM_GRAY),
-                text("Space").fg(Color.WHITE), text(":toggle  ").fg(DIM_GRAY),
-                text("\u2190\u2192").fg(Color.WHITE), text(":change  ").fg(DIM_GRAY),
-                text("c").fg(Color.WHITE), text(":filter  ").fg(DIM_GRAY),
-                text("x").fg(Color.WHITE), text(":clear  ").fg(DIM_GRAY),
-                text("?").fg(Color.WHITE), text(":help  ").fg(DIM_GRAY),
-                text("q").fg(Color.WHITE), text(":quit").fg(DIM_GRAY),
+                text("  Tab").fg(t.text()), text(":navigate  ").fg(t.textDim()),
+                text("/").fg(t.text()), text(":search  ").fg(t.textDim()),
+                text("Space").fg(t.text()), text(":toggle  ").fg(t.textDim()),
+                text("\u2190\u2192").fg(t.text()), text(":change  ").fg(t.textDim()),
+                text("c").fg(t.text()), text(":filter  ").fg(t.textDim()),
+                text("x").fg(t.text()), text(":clear  ").fg(t.textDim()),
+                text("?").fg(t.text()), text(":help  ").fg(t.textDim()),
+                text("q").fg(t.text()), text(":quit").fg(t.textDim()),
                 spacer()
         ).length(1);
     }
