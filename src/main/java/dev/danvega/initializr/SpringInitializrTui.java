@@ -237,8 +237,8 @@ public class SpringInitializrTui extends ToolkitApp {
             return EventResult.HANDLED;
         }
 
-        // Space — Toggle dependency
-        if (event.isChar(' ')) {
+        // Space — Toggle dependency (only when not editing a text field)
+        if (event.isChar(' ') && !isTextFieldFocused()) {
             mainScreen.toggleDependency();
             return EventResult.HANDLED;
         }
