@@ -13,6 +13,7 @@ An interactive terminal UI for scaffolding Spring Boot projects, powered by the 
 - [Build & Run](#build--run)
 - [Setting Up Shell Access](#setting-up-shell-access)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
+- [Themes](#themes)
 - [Post-Generate Hook](#post-generate-hook)
 - [About TamboUI](#about-tamboui)
 - [Project Structure](#project-structure)
@@ -165,6 +166,25 @@ The generated project will be extracted into the current working directory.
 | `Enter` | Generate project |
 | `Esc` | Back |
 
+## Themes
+
+The TUI supports color themes. The default is `spring` (the classic Spring green palette). To switch themes, edit `~/.spring-initializr/config.json` and set the `theme` field:
+
+```json
+{
+  "theme": "catppuccin-mocha"
+}
+```
+
+### Available Themes
+
+| Theme | Description |
+|---|---|
+| `spring` | Default Spring green palette |
+| `catppuccin-mocha` | Catppuccin Mocha — a warm blue-toned dark theme |
+
+The theme is loaded at startup. To switch, change the value in `config.json` and relaunch the app. If the `theme` field is missing or unrecognized, it defaults to `spring`.
+
 ## Post-Generate Hook
 
 You can configure a command to run automatically in the generated project directory after the TUI exits. This is useful for launching tools like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) right after scaffolding a project.
@@ -208,7 +228,9 @@ src/main/java/dev/danvega/initializr/
 │   ├── MainScreen.java           # Configuration form + dependency picker
 │   ├── DependencyPicker.java     # Searchable, categorized dependency list
 │   ├── ExploreScreen.java        # Build file preview with syntax highlighting
-│   └── GenerateScreen.java       # Download progress + IDE launcher
+│   ├── GenerateScreen.java       # Download progress + IDE launcher
+│   ├── Theme.java                # Semantic color theme record
+│   └── ThemeManager.java         # Global theme registry
 └── util/
     ├── IdeLauncher.java          # IDE detection and launch
     ├── OsIdeLocator.java         # Platform-specific IDE locator interface
