@@ -14,6 +14,7 @@ An interactive terminal UI for scaffolding Spring Boot projects, powered by the 
 - [Setting Up Shell Access](#setting-up-shell-access)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
 - [Themes](#themes)
+- [Open in Terminal](#open-in-terminal)
 - [Post-Generate Hook](#post-generate-hook)
 - [About TamboUI](#about-tamboui)
 - [Project Structure](#project-structure)
@@ -36,7 +37,7 @@ Preview your generated build file before downloading. Switch between `pom.xml`, 
 ![Explore](screenshots/explore.png)
 
 ### Generate & Open in IDE
-After generation, the project is extracted to your chosen directory. The app auto-detects installed IDEs (IntelliJ IDEA, VS Code, etc.) and lets you open the project directly, generate another, or quit.
+After generation, the project is extracted to your chosen directory. The app auto-detects installed IDEs (IntelliJ IDEA, VS Code, etc.) and lets you open the project directly, open in your terminal, generate another, or quit.
 ![Generate](screenshots/generate.png)
 
 ### Help
@@ -52,6 +53,7 @@ A quick-reference help overlay showing all keyboard shortcuts organized by scree
 - Switch between `pom.xml`, `build.gradle`, and `build.gradle.kts` previews
 - Generate and extract projects to the current working directory
 - Auto-detect and launch IDEs (IntelliJ IDEA, VS Code, Cursor, Eclipse, NetBeans)
+- "Open in Terminal" option prints the project path and a ready-to-copy `cd` command
 - Cross-platform support (macOS, Linux, Windows)
 - Remembers your preferences between sessions
 
@@ -184,6 +186,12 @@ The TUI supports color themes. The default is `spring` (the classic Spring green
 | `catppuccin-mocha` | Catppuccin Mocha — a warm blue-toned dark theme |
 
 The theme is loaded at startup. To switch, change the value in `config.json` and relaunch the app. If the `theme` field is missing or unrecognized, it defaults to `spring`.
+
+## Open in Terminal
+
+After project generation, the IDE/editor selection list includes an "Open in Terminal" option as its last entry. When selected, the TUI exits and prints the project directory path along with a ready-to-copy `cd` command so you can navigate there immediately. If a [post-generate hook](#post-generate-hook) is configured, it still runs after the TUI exits.
+
+The footer hint updates dynamically to show `[Enter] Open in Terminal` when this option is highlighted.
 
 ## Post-Generate Hook
 
