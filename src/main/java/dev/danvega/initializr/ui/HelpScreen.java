@@ -24,6 +24,7 @@ public class HelpScreen {
                                 shortcutRow("\u2191 \u2193", "Move between fields / dependencies"),
                                 shortcutRow("k j", "Move between fields / dependencies (vim)"),
                                 shortcutRow("/", "Search dependencies"),
+                                shortcutRow("Ctrl+p / Ctrl+n", "Move between dependencies search result (vim)"),
                                 shortcutRow("Space / Enter", "Toggle selected dependency"),
                                 shortcutRow("c", "Cycle category filter"),
                                 shortcutRow("x", "Clear all dependencies"),

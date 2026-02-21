@@ -139,11 +139,11 @@ public class SpringInitializrTui extends ToolkitApp {
                 mainScreen.toggleDependency();
                 return EventResult.HANDLED;
             }
-            if (event.isUp()) {
+            if (event.isUp() || (event.hasCtrl() && event.isCharIgnoreCase('p'))) {
                 mainScreen.getDependencyPicker().moveUp();
                 return EventResult.HANDLED;
             }
-            if (event.isDown()) {
+            if (event.isDown() || (event.hasCtrl() && event.isCharIgnoreCase('n'))) {
                 mainScreen.getDependencyPicker().moveDown();
                 return EventResult.HANDLED;
             }
