@@ -180,10 +180,14 @@ The TUI supports color themes. The default is `spring` (the classic Spring green
 
 ### Available Themes
 
-| Theme | Description |
-|---|---|
-| `spring` | Default Spring green palette |
-| `catppuccin-mocha` | Catppuccin Mocha — a warm blue-toned dark theme |
+| Theme | Description | Preview |
+|---|---|---|
+| `spring` | Default Spring green palette | ![Spring](screenshots/themes/spring.png) |
+| `catppuccin-mocha` | Catppuccin Mocha — a warm blue-toned dark theme | ![Catppuccin Mocha](screenshots/themes/catppuccin-mocha.png) |
+| `dracula` | Dracula — vibrant purple and cyan dark theme | ![Dracula](screenshots/themes/dracula.png) |
+| `nord` | Nord — cool, minimal frost-blue palette | ![Nord](screenshots/themes/nord.png) |
+| `gruvbox-dark` | Gruvbox Dark — warm, retro orange and yellow palette | ![Gruvbox Dark](screenshots/themes/gruvbox-dark.png) |
+| `tokyo-night` | Tokyo Night — modern blue and cyan dark theme | ![Tokyo Night](screenshots/themes/tokyo-night.png) |
 
 The theme is loaded at startup. To switch, change the value in `config.json` and relaunch the app. If the `theme` field is missing or unrecognized, it defaults to `spring`.
 
