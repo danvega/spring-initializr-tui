@@ -2,7 +2,8 @@
   "resources": {
     "includes": [
       {"pattern": "dev/tamboui/.*\\.properties$"},
-      {"pattern": "themes/.*\\.tcss$"}
+      {"pattern": "themes/.*\\.tcss$"},
+      {"pattern": "application\\.properties"}
     ]
   }
 }

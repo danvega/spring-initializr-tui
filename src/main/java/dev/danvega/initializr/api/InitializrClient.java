@@ -20,9 +20,25 @@ import java.util.StringJoiner;
 public class InitializrClient {
 
     private static final String BASE_URL = "https://start.spring.io";
-    private static final String USER_AGENT = "SpringInitializrTUI";
+    private static final String USER_AGENT = loadUserAgent();
     private final HttpClient httpClient;
     private final JsonMapper jsonMapper;
+
+    private static String loadUserAgent() {
+        try (var in = InitializrClient.class.getResourceAsStream("/application.properties")) {
+            if (in != null) {
+                var props = new java.util.Properties();
+                props.load(in);
+                var version = props.getProperty("app.version");
+                if (version != null && !version.isBlank()) {
+                    return "SpringInitializrTUI/" + version;
+                }
+            }
+        } catch (IOException e) {
+            // fall through to default
+        }
+        return "SpringInitializrTUI";
+    }
 
     public InitializrClient() {
         this.httpClient = HttpClient.newBuilder()
