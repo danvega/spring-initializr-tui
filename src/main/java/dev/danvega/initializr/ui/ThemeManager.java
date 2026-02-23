@@ -15,6 +15,10 @@ public final class ThemeManager {
     static {
         THEMES.put("spring", Theme.SPRING);
         THEMES.put("catppuccin-mocha", Theme.CATPPUCCIN_MOCHA);
+        THEMES.put("dracula", Theme.DRACULA);
+        THEMES.put("nord", Theme.NORD);
+        THEMES.put("gruvbox-dark", Theme.GRUVBOX_DARK);
+        THEMES.put("tokyo-night", Theme.TOKYO_NIGHT);
     }
 
     private ThemeManager() {}
