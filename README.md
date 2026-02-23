@@ -4,6 +4,8 @@
 
 An interactive terminal UI for scaffolding Spring Boot projects, powered by the [start.spring.io](https://start.spring.io) API. Built with [TamboUI](https://tamboui.dev), a declarative Java TUI framework.
 
+I had an idea to improve my personal workflow for scaffolding Spring Boot projects, so I made a [video](https://youtu.be/J9C2MiQTIYs) about it. This is the code that goes along with that video.
+
 ## Table of Contents
 
 - [Screenshots](#screenshots)
