@@ -210,7 +210,8 @@ public class SpringInitializrTui extends ToolkitApp {
         }
 
         // Arrow keys & Vim bindings — Up/Down also navigate between fields
-        if (event.isUp() || event.isCharIgnoreCase('k')) {
+        if (event.isUp() || (event.hasCtrl() && event.isCharIgnoreCase('p')) 
+                || (event.isCharIgnoreCase('k') && !isTextFieldFocused())) {
             if (mainScreen.getFocusArea() == MainScreen.FocusArea.DEPENDENCIES) {
                 if (mainScreen.getDependencyPicker().isAtTop()) {
                     mainScreen.focusPrevious();
@@ -222,7 +223,9 @@ public class SpringInitializrTui extends ToolkitApp {
             }
             return EventResult.HANDLED;
         }
-        if (event.isDown() || event.isCharIgnoreCase('j')) {
+        if (event.isDown() || (event.hasCtrl() && event.isCharIgnoreCase('n')) 
+                || (event.isCharIgnoreCase('j') && !isTextFieldFocused())
+                || (event.isConfirm() && isTextFieldFocused())) {
             if (mainScreen.getFocusArea() == MainScreen.FocusArea.DEPENDENCIES) {
                 mainScreen.getDependencyPicker().moveDown();
             } else {
@@ -230,11 +233,11 @@ public class SpringInitializrTui extends ToolkitApp {
             }
             return EventResult.HANDLED;
         }
-        if (event.isLeft() || event.isCharIgnoreCase('h')) {
+        if (event.isLeft() || (event.isCharIgnoreCase('h') && !isTextFieldFocused())) {
             mainScreen.cycleOption(-1);
             return EventResult.HANDLED;
         }
-        if (event.isRight() || event.isCharIgnoreCase('l')) {
+        if (event.isRight() || (event.isCharIgnoreCase('l') && !isTextFieldFocused())) {
             mainScreen.cycleOption(1);
             return EventResult.HANDLED;
         }
