@@ -253,14 +253,24 @@ public class MainScreen {
         var t = ThemeManager.current();
         var elements = new ArrayList<Element>();
 
-        // Search bar
+        // Search bar if (searchMode)
         if (searchMode) {
-            elements.add(
-                    row(
-                            text("  Search: ").fg(t.text()).bold(),
-                            text("[ " + searchBuffer + "_ ]").fg(t.primary())
-                    )
-            );
+            Element searchBar;
+            if (searchBuffer.isEmpty()) {
+                searchBar = row (
+                    text("  Search: ").fg(t.text()).bold(),
+                    text("[ ").fg(t.primary()),
+                    text("Esc").fg(t.text()).bold(),
+                    text(":exit").fg(t.textDim()),
+                    text(" ]").fg(t.primary())
+                );
+            } else {
+                searchBar = row(
+                    text("  Search: ").fg(t.text()).bold(),
+                    text("[ " + searchBuffer + "_ ]").fg(t.primary())
+                );
+            }
+            elements.add(searchBar);
         } else if (config.getSelectedCount() > 0) {
             elements.add(
                     text("  Press / to search, x to clear all").fg(t.textDim()).italic()
