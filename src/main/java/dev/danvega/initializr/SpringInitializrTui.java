@@ -108,7 +108,17 @@ public class SpringInitializrTui extends ToolkitApp {
     }
 
     private EventResult handleKeyEvent(KeyEvent event) {
+        // Ctrl+C always quits, even in search mode
+        if (event.isCtrlC()) {
+            quit();
+            return EventResult.HANDLED;
+        }
+
+        // Hotkey 'q' quits only when not in search mode
         if (event.isQuit()) {
+            if (currentScreen == Screen.MAIN && mainScreen !=null && mainScreen.isSearchMode()) {
+                return handleMainScreenKey(event);
+            }
             quit();
             return EventResult.HANDLED;
         }
