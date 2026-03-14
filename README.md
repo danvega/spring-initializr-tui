@@ -86,6 +86,15 @@ mvn package -DskipTests
 java --enable-preview -jar target/spring-initializr-tui-0.1.1.jar
 ```
 
+### Fat JAR (Shade)
+
+Build a self-contained JAR with all dependencies bundled:
+
+```bash
+mvn package -Pshade -DskipTests
+java --enable-preview -jar target/spring-initializr-tui-0.1.1.jar
+```
+
 ### Native Image (GraalVM)
 
 Compile to a standalone native binary for instant startup:
