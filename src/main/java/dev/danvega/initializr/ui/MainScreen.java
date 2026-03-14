@@ -253,11 +253,11 @@ public class MainScreen {
         var t = ThemeManager.current();
         var elements = new ArrayList<Element>();
 
-        // Search bar if (searchMode)
+        // Search bar
         if (searchMode) {
             Element searchBar;
             if (searchBuffer.isEmpty()) {
-                searchBar = row (
+                searchBar = row(
                     text("  Search: ").fg(t.text()).bold(),
                     text("[ ").fg(t.primary()),
                     text("Esc").fg(t.text()).bold(),
