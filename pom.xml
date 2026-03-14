@@ -166,6 +166,7 @@
                             <mainClass>${main.class}</mainClass>
                             <imageName>spring-initializr-tui</imageName>
                             <buildArgs>
+                                <arg>--initialize-at-build-time=dev.tamboui</arg>
                                 <arg>--enable-preview</arg>
                                 <arg>-H:+ReportExceptionStackTraces</arg>
                             </buildArgs>
