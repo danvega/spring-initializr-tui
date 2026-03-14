@@ -131,7 +131,7 @@ public class SpringInitializrTui extends ToolkitApp {
                 mainScreen.exitSearchMode();
                 return EventResult.HANDLED;
             }
-            if (event.isDeleteBackward()) {
+            if (isBackspace(event)) {
                 mainScreen.deleteSearchChar();
                 return EventResult.HANDLED;
             }
@@ -257,7 +257,7 @@ public class SpringInitializrTui extends ToolkitApp {
         }
 
         // Backspace — Delete char in text fields
-        if (event.isDeleteBackward()) {
+        if (isBackspace(event)) {
             mainScreen.handleBackspace();
             return EventResult.HANDLED;
         }
@@ -624,6 +624,18 @@ public class SpringInitializrTui extends ToolkitApp {
                         spacer()
                 ).length(1)
         );
+    }
+
+    /**
+     * Detects if the key event corresponds to a backspace action, accounting for different terminals sending different codes.
+     * The isDeleteBackward() method checks for the standard backspace key, while character code 104 corresponds to the backspace on Windows.
+     *
+     * @param event The key event to check
+     * @return true if the event is a backspace, false otherwise
+     */
+    private boolean isBackspace(KeyEvent event) {
+        return event.isDeleteBackward()
+          || event.character() == 104;
     }
 
     public static void main(String[] args) throws Exception {
