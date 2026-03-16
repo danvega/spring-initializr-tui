@@ -357,7 +357,9 @@ public class SpringInitializrTui extends ToolkitApp {
     }
 
     private boolean isTextFieldFocused() {
-        return mainScreen != null && switch (mainScreen.getFocusArea()) {
+        if (mainScreen == null) return false;
+
+        return mainScreen.isSearchMode() || switch (mainScreen.getFocusArea()) {
             case GROUP, ARTIFACT, NAME, DESCRIPTION -> true;
             default -> false;
         };
