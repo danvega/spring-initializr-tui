@@ -23,6 +23,7 @@ public class MainScreen {
     private final InitializrMetadata.SelectField appFormatField;
     private FocusArea focusArea = FocusArea.PROJECT_TYPE;
     private boolean searchMode = false;
+    private boolean insertMode = false;
     private StringBuilder searchBuffer = new StringBuilder();
 
     public MainScreen(InitializrMetadata.Metadata metadata, ProjectConfig config,
@@ -44,6 +45,7 @@ public class MainScreen {
     public FocusArea getFocusArea() { return focusArea; }
     public DependencyPicker getDependencyPicker() { return dependencyPicker; }
     public boolean isSearchMode() { return searchMode; }
+    public void setInsertMode(boolean insertMode) { this.insertMode = insertMode; }
 
     public void enterSearchMode() {
         searchMode = true;
@@ -241,7 +243,8 @@ public class MainScreen {
     private Element renderTextRow(String label, String value, boolean focused) {
         var t = ThemeManager.current();
         String paddedLabel = String.format("  %-12s", label);
-        String displayValue = focused ? "[ " + value + "_ ]" : "[ " + value + " ]";
+        String cursor = (focused && !insertMode) ? "\u258c" : (focused ? "_" : " ");
+        String displayValue = "[ " + value + cursor + " ]";
 
         return row(
                 text(paddedLabel).fg(focused ? t.text() : t.textDim()).bold(),
@@ -311,6 +314,13 @@ public class MainScreen {
 
     private Element renderFooter() {
         var t = ThemeManager.current();
+        if (insertMode) {
+            return row(
+                    text("  -- INSERT --").fg(t.primary()).bold(),
+                    text("  Esc").fg(t.text()), text(":normal mode").fg(t.textDim()),
+                    spacer()
+            ).length(1);
+        }
         return row(
                 text("  Tab").fg(t.text()), text(":navigate  ").fg(t.textDim()),
                 text("/").fg(t.text()), text(":search  ").fg(t.textDim()),
@@ -318,6 +328,7 @@ public class MainScreen {
                 text("\u2190\u2192").fg(t.text()), text(":change  ").fg(t.textDim()),
                 text("c").fg(t.text()), text(":filter  ").fg(t.textDim()),
                 text("x").fg(t.text()), text(":clear  ").fg(t.textDim()),
+                text("i").fg(t.text()), text(":insert  ").fg(t.textDim()),
                 text("?").fg(t.text()), text(":help  ").fg(t.textDim()),
                 text("q").fg(t.text()), text(":quit").fg(t.textDim()),
                 spacer()
