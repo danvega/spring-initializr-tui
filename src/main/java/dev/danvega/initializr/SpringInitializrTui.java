@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.nio.file.attribute.PosixFilePermission;
 
 import static dev.tamboui.toolkit.Toolkit.*;
 
@@ -593,9 +594,28 @@ public class SpringInitializrTui extends ToolkitApp {
                 }
             }
         }
+        makeExecutable(destDir, "gradlew", "mvnw");
 
         if ("yaml".equals(config.getApplicationFormat())) {
             convertPropertiesToYaml(destDir);
+        }
+    }
+
+    private void makeExecutable(Path destDir, String... scripts) {
+        if (System.getProperty("os.name", "").toLowerCase().contains("win")) {
+            return;
+        }
+        for (String script : scripts) {
+            Path path = destDir.resolve(script);
+            try {
+                if (Files.exists(path)) {
+                    var perms = new HashSet<>(Files.getPosixFilePermissions(path));
+                    perms.add(PosixFilePermission.OWNER_EXECUTE);
+                    perms.add(PosixFilePermission.GROUP_EXECUTE);
+                    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+                    Files.setPosixFilePermissions(path, perms);
+                }
+            } catch (IOException | UnsupportedOperationException ignored) {}
         }
     }
 
