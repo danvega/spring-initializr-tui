@@ -30,6 +30,8 @@ public class HelpScreen {
                                 shortcutRow("x", "Clear all dependencies"),
                                 shortcutRow("e", "Explore generated project"),
                                 shortcutRow("g", "Generate and download project"),
+                                shortcutRow("i", "Enter insert mode (text fields)"),
+                                shortcutRow("Esc", "Exit insert mode \u2192 normal mode"),
                                 shortcutRow("?", "Show this help screen"),
                                 shortcutRow("q / Ctrl+C", "Quit"),
                                 text(""),
