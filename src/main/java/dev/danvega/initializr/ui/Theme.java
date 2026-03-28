@@ -95,4 +95,17 @@ public record Theme(
             Color.rgb(247, 118, 142),   // error (red)
             Color.rgb(86, 95, 137)      // syntaxComment (comment)
     );
+
+    public static final Theme SYNTHWAVE_84 = new Theme(
+            Color.rgb(254, 222, 93),    // primary (keywords)
+            Color.rgb(255, 126, 219),   // primaryBright (bright pink)
+            Color.rgb(132, 139, 189),   // primaryDim (comment purple)
+            Color.rgb(54, 249, 246),    // secondary (cyan)
+            Color.rgb(255, 139, 57),    // accent (string orange)
+            Color.rgb(187, 187, 187),   // text (base text)
+            Color.rgb(132, 139, 189),   // textDim (comment purple)
+            Color.rgb(114, 241, 184),   // success (green)
+            Color.rgb(254, 68, 80),     // error (red)
+            Color.rgb(132, 139, 189)    // syntaxComment (comment purple)
+    );
 }
