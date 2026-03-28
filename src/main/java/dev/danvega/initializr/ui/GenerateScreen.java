@@ -1,7 +1,6 @@
 package dev.danvega.initializr.ui;
 
 import dev.danvega.initializr.util.IdeLauncher;
-import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 
 import java.nio.file.Path;
