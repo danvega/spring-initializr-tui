@@ -1,6 +1,5 @@
 package dev.danvega.initializr.ui;
 
-import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 
 import static dev.tamboui.toolkit.Toolkit.*;

@@ -2,7 +2,6 @@ package dev.danvega.initializr.ui;
 
 import dev.danvega.initializr.api.InitializrMetadata;
 import dev.danvega.initializr.model.ProjectConfig;
-import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 
 import java.util.ArrayList;
