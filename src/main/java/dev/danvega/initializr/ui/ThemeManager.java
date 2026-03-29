@@ -19,6 +19,7 @@ public final class ThemeManager {
         THEMES.put("nord", Theme.NORD);
         THEMES.put("gruvbox-dark", Theme.GRUVBOX_DARK);
         THEMES.put("tokyo-night", Theme.TOKYO_NIGHT);
+        THEMES.put("synthwave-84", Theme.SYNTHWAVE_84);
     }
 
     private ThemeManager() {}

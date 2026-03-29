@@ -199,6 +199,7 @@ The TUI supports color themes. The default is `spring` (the classic Spring green
 | `nord` | Nord — cool, minimal frost-blue palette | ![Nord](screenshots/themes/nord.png) |
 | `gruvbox-dark` | Gruvbox Dark — warm, retro orange and yellow palette | ![Gruvbox Dark](screenshots/themes/gruvbox-dark.png) |
 | `tokyo-night` | Tokyo Night — modern blue and cyan dark theme | ![Tokyo Night](screenshots/themes/tokyo-night.png) |
+| `synthwave-84` | Synthwave '84 — cool, neon cyberpunk dark theme | ![Synthwave '84](screenshots/themes/synthwave-84.png) |
 
 The theme is loaded at startup. To switch, change the value in `config.json` and relaunch the app. If the `theme` field is missing or unrecognized, it defaults to `spring`.
 
