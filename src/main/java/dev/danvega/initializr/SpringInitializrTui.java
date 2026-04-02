@@ -601,7 +601,7 @@ public class SpringInitializrTui extends ToolkitApp {
         }
     }
 
-    private void makeExecutable(Path destDir, String... scripts) {
+    void makeExecutable(Path destDir, String... scripts) {
         if (System.getProperty("os.name", "").toLowerCase().contains("win")) {
             return;
         }
@@ -615,7 +615,9 @@ public class SpringInitializrTui extends ToolkitApp {
                     perms.add(PosixFilePermission.OTHERS_EXECUTE);
                     Files.setPosixFilePermissions(path, perms);
                 }
-            } catch (IOException | UnsupportedOperationException ignored) {}
+            } catch (IOException | UnsupportedOperationException e) {
+                System.err.println("WARN: Could not set execute permissions on " + path + ": " + e.getMessage());
+            }
         }
     }
 
