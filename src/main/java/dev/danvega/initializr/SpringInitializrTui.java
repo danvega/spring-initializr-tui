@@ -161,15 +161,13 @@ public class SpringInitializrTui extends ToolkitApp {
 
         // Esc — exit insert mode (before quit check steals it)
         if (event.isCancel() && vimInsertMode) {
-            vimInsertMode = false;
-            mainScreen.setInsertMode(false);
+            setInsertMode(false);
             return EventResult.HANDLED;
         }
 
         // i — enter insert mode when on a text field in normal mode
         if (event.isChar('i') && !vimInsertMode && isOnTextFieldArea()) {
-            vimInsertMode = true;
-            mainScreen.setInsertMode(true);
+            setInsertMode(true);
             return EventResult.HANDLED;
         }
 
@@ -214,8 +212,7 @@ public class SpringInitializrTui extends ToolkitApp {
 
         // Tab / Shift+Tab — Navigate focus (check both semantic and direct key)
         if (event.isFocusNext() || event.isKey(KeyCode.TAB)) {
-            vimInsertMode = false;
-            mainScreen.setInsertMode(false);
+            setInsertMode(false);
             if (event.hasShift()) {
                 mainScreen.focusPrevious();
             } else {
@@ -224,8 +221,7 @@ public class SpringInitializrTui extends ToolkitApp {
             return EventResult.HANDLED;
         }
         if (event.isFocusPrevious()) {
-            vimInsertMode = false;
-            mainScreen.setInsertMode(false);
+            setInsertMode(false);
             mainScreen.focusPrevious();
             return EventResult.HANDLED;
         }
@@ -235,15 +231,13 @@ public class SpringInitializrTui extends ToolkitApp {
             if (mainScreen.getFocusArea() == MainScreen.FocusArea.DEPENDENCIES) {
                 if (mainScreen.getDependencyPicker().isAtTop()) {
                     mainScreen.focusPrevious();
-                    vimInsertMode = isOnTextFieldArea();
-                    mainScreen.setInsertMode(vimInsertMode);
+                    setInsertMode(isOnTextFieldArea());
                 } else {
                     mainScreen.getDependencyPicker().moveUp();
                 }
             } else {
                 mainScreen.focusPrevious();
-                vimInsertMode = isOnTextFieldArea();
-                mainScreen.setInsertMode(vimInsertMode);
+                setInsertMode(isOnTextFieldArea());
             }
             return EventResult.HANDLED;
         }
@@ -252,15 +246,13 @@ public class SpringInitializrTui extends ToolkitApp {
             if (mainScreen.getFocusArea() == MainScreen.FocusArea.DEPENDENCIES) {
                 if (mainScreen.getDependencyPicker().isAtTop()) {
                     mainScreen.focusPrevious();
-                    vimInsertMode = false;
-                    mainScreen.setInsertMode(false);
+                    setInsertMode(false);
                 } else {
                     mainScreen.getDependencyPicker().moveUp();
                 }
             } else {
                 mainScreen.focusPrevious();
-                vimInsertMode = false;
-                mainScreen.setInsertMode(false);
+                setInsertMode(false);
             }
             return EventResult.HANDLED;
         }
@@ -270,8 +262,7 @@ public class SpringInitializrTui extends ToolkitApp {
                 mainScreen.getDependencyPicker().moveDown();
             } else {
                 mainScreen.focusNext();
-                vimInsertMode = isOnTextFieldArea();
-                mainScreen.setInsertMode(vimInsertMode);
+                setInsertMode(isOnTextFieldArea());
             }
             return EventResult.HANDLED;
         }
@@ -281,8 +272,7 @@ public class SpringInitializrTui extends ToolkitApp {
                 mainScreen.getDependencyPicker().moveDown();
             } else {
                 mainScreen.focusNext();
-                vimInsertMode = false;
-                mainScreen.setInsertMode(false);
+                setInsertMode(false);
             }
             return EventResult.HANDLED;
         }
@@ -418,6 +408,11 @@ public class SpringInitializrTui extends ToolkitApp {
 
     private boolean isTextFieldFocused() {
         return vimInsertMode && isOnTextFieldArea();
+    }
+
+    private void setInsertMode(boolean mode) {
+        vimInsertMode = mode;
+        mainScreen.setInsertMode(mode);
     }
 
     private static final Set<String> SKIP_EXTENSIONS = Set.of(
