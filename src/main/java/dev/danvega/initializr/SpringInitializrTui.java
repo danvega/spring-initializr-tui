@@ -6,6 +6,7 @@ import dev.danvega.initializr.model.ProjectConfig;
 import dev.danvega.initializr.ui.*;
 import dev.danvega.initializr.util.ConfigStore;
 import dev.danvega.initializr.util.IdeLauncher;
+import dev.danvega.initializr.util.PosixHook;
 import dev.tamboui.tui.event.KeyCode;
 import dev.tamboui.tui.event.KeyEvent;
 import dev.tamboui.toolkit.app.ToolkitApp;
@@ -639,9 +640,24 @@ public class SpringInitializrTui extends ToolkitApp {
             System.out.println();
         }
 
-        // Execute post-generate hook after TUI has fully exited and terminal is restored
+        // Execute post-generate hook after the TUI has fully exited.
         if (app.pendingHookCommand != null && app.pendingHookDir != null) {
             boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("win");
+
+            // On POSIX, replace this process with the hook via exec(). An interactive
+            // child such as Claude Code cannot reliably own the terminal while it runs
+            // as a child of the still-alive JVM (JLine's native terminal state lingers,
+            // the child takes no input and is killed by SIGHUP). exec discards the JVM
+            // entirely while keeping the same PID/foreground job/controlling terminal.
+            if (!isWindows) {
+                try {
+                    PosixHook.exec(app.pendingHookDir, app.pendingHookCommand);
+                    // Never reached on success.
+                } catch (Throwable execFailed) {
+                    // Fall back to spawning a child below.
+                }
+            }
+
             var pb = isWindows
                     ? new ProcessBuilder("cmd", "/c", app.pendingHookCommand)
                     : new ProcessBuilder("sh", "-c", app.pendingHookCommand);
