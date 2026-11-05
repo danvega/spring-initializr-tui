@@ -13,13 +13,14 @@ public final class ThemeManager {
     private static Theme current = Theme.SPRING;
 
     static {
-        THEMES.put("spring", Theme.SPRING);
+	THEMES.put("spring", Theme.SPRING);
         THEMES.put("catppuccin-mocha", Theme.CATPPUCCIN_MOCHA);
         THEMES.put("dracula", Theme.DRACULA);
         THEMES.put("nord", Theme.NORD);
         THEMES.put("gruvbox-dark", Theme.GRUVBOX_DARK);
         THEMES.put("tokyo-night", Theme.TOKYO_NIGHT);
         THEMES.put("synthwave-84", Theme.SYNTHWAVE_84);
+	THEMES.put("gruber-darker",Theme.GRUBER_DARKER_THEME);
     }
 
     private ThemeManager() {}

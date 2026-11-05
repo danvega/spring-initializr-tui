@@ -108,4 +108,16 @@ public record Theme(
             Color.rgb(254, 68, 80),     // error (red)
             Color.rgb(132, 139, 189)    // syntaxComment (comment purple)
     );
+    public static final Theme GRUBER_DARKER_THEME = new Theme(
+Color.rgb(115, 201, 54),     // primary (green)
+Color.rgb(115, 201, 54),      // primaryBright (bright red)
+Color.rgb(158, 149, 199),    // primaryDim (wisteria)
+Color.rgb(150, 166, 200),    // secondary (niagara)
+Color.rgb(204, 140, 60),     // accent (strings)
+Color.rgb(255, 221, 51),     // text (comments)
+Color.rgb(228, 228, 239),    // textDim (base text)
+Color.rgb(115, 201, 54),     // success (green)
+Color.rgb(244, 56, 65),      // error (red)
+Color.rgb(204, 140, 60)     // syntax commnents (green)
+   );
 }

@@ -266,7 +266,7 @@ src/main/java/dev/danvega/initializr/
 ## Tech Stack
 
 - **JDK 25** -- Latest LTS with preview features
-- **TamboUI 0.2.0-SNAPSHOT** -- Declarative TUI framework
+- **TamboUI 0.6.0** -- Declarative TUI framework
 - **Jackson 3.0** -- JSON parsing for the Spring Initializr API
 - **java.net.http.HttpClient** -- HTTP communication (no external HTTP library)
 - **GraalVM 25** -- Native image compilation for instant startup
