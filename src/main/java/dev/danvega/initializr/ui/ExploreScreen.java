@@ -51,7 +51,7 @@ public class ExploreScreen {
     private static final Pattern XML_TAG = Pattern.compile("(</?[a-zA-Z][a-zA-Z0-9:.-]*)([^>]*?)(/?>)");
     private static final Pattern XML_ATTR = Pattern.compile("([a-zA-Z][a-zA-Z0-9:.-]*)\\s*=\\s*(\"[^\"]*\"|'[^']*')");
 
-    // Gradle keyword set
+    // Gradle 
     private static final Set<String> GRADLE_KEYWORDS = Set.of(
             "plugins", "dependencies", "repositories", "java", "tasks",
             "implementation", "testImplementation", "runtimeOnly", "compileOnly",

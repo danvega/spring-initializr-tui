@@ -46,6 +46,10 @@ After generation, the project is extracted to your chosen directory. The app aut
 A quick-reference help overlay showing all keyboard shortcuts organized by screen — Main Screen, Explore Screen, and Generate Screen.
 ![Help](screenshots/help.png)
 
+### Theme Selector
+A theme selector overlay showing all builtin themes organized by names - can be acsessed by keybindings.
+![Help](screenshots/theme_selector.png)
+
 ## Features
 
 - Configure Spring Boot projects entirely from your terminal (group, artifact, Boot version, Java version, packaging, language)
