@@ -109,6 +109,7 @@ public class ConfigStore {
         public String getLastApplicationFormat() { return lastApplicationFormat; }
         public void setLastApplicationFormat(String v) { this.lastApplicationFormat = v; }
 
+        public List<List<String>> getRecentDependencies() { return recentDependencies; }
         public List<List<String>> recentDependencies() { return recentDependencies; }
         public void setRecentDependencies(List<List<String>> v) { this.recentDependencies = v; }
     }

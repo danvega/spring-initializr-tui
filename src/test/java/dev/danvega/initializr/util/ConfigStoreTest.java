@@ -78,6 +78,18 @@ class ConfigStoreTest {
         assertThat(loaded.getLastPackaging()).isEqualTo("war");
     }
 
+    @Test
+    void loadSave_persistsRecentDependencies() {
+        var prefs = new ConfigStore.UserPreferences();
+        store.addRecentDependencies(prefs, List.of("web", "jpa"));
+        store.addRecentDependencies(prefs, List.of("security"));
+        store.save(prefs);
+
+        var loaded = store.load();
+        assertThat(loaded.recentDependencies())
+                .containsExactly(List.of("security"), List.of("web", "jpa"));
+    }
+
     // --- theme persistence ---
 
     @Test
