@@ -65,6 +65,9 @@ screenshots/*.gif
 # App config
 .spring-initializr
 
+# Quarkus CLI local cache
+.quarkus/
+
 # Claude
 /CLAUDE.md
 /.claude/
