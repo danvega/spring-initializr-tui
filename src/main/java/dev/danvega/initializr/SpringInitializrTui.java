@@ -31,7 +31,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class SpringInitializrTui extends ToolkitApp {
 
-    enum Screen { SPLASH, MAIN, EXPLORE, GENERATE, HELP }
+    enum Screen { SPLASH, MAIN, EXPLORE, GENERATE, HELP , THEME};
 
     private volatile Screen currentScreen = Screen.SPLASH;
     private Screen previousScreen = Screen.MAIN;
@@ -40,11 +40,11 @@ public class SpringInitializrTui extends ToolkitApp {
     private final ProjectConfig config = new ProjectConfig();
     private final GenerateScreen generateScreen = new GenerateScreen();
     private final HelpScreen helpScreen = new HelpScreen();
+    private final ThemeScreen themeScreen = new ThemeScreen(); 
 
     private volatile InitializrMetadata.Metadata metadata;
     private volatile MainScreen mainScreen;
     private volatile ExploreScreen exploreScreen;
-
     private volatile double splashProgress = 0.0;
     private volatile String splashMessage = "Connecting to start.spring.io...";
 
@@ -60,6 +60,7 @@ public class SpringInitializrTui extends ToolkitApp {
     @Override
     protected void onStart() {
         ThemeManager.setTheme(configStore.load().getTheme());
+	
 
         CompletableFuture.runAsync(() -> {
             try {
@@ -102,6 +103,8 @@ public class SpringInitializrTui extends ToolkitApp {
             case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(ThemeManager.current().primary());
             case EXPLORE -> exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(ThemeManager.current().primary());
             case GENERATE -> generateScreen.render();
+            case THEME -> themeScreen != null ? themeScreen.render() : text("Loading... because it is still a nill ").fg(ThemeManager.current().primary());
+	// case THEME -> themeScreen.render();
             case HELP -> helpScreen.render();
         };
 
@@ -123,6 +126,7 @@ public class SpringInitializrTui extends ToolkitApp {
             case EXPLORE -> handleExploreScreenKey(event);
             case GENERATE -> handleGenerateScreenKey(event);
             case HELP -> handleHelpScreenKey(event);
+	case THEME -> handleThemeScreenKey(event);
         };
     }
 
@@ -171,6 +175,15 @@ public class SpringInitializrTui extends ToolkitApp {
             setInsertMode(true);
             return EventResult.HANDLED;
         }
+
+        // t — Show Theme Screen
+	if (event.isChar('t') && !isTextFieldFocused()){
+            previousScreen = currentScreen;
+            currentScreen = Screen.THEME;
+	    themeScreen.reset();
+
+            return EventResult.HANDLED;
+	}
 
         // ? — Show help
         if (event.isChar('?') && !isTextFieldFocused()) {
@@ -394,6 +407,14 @@ public class SpringInitializrTui extends ToolkitApp {
 
     private EventResult handleHelpScreenKey(KeyEvent event) {
         if (event.isCancel() || event.isChar('?')) {
+            currentScreen = previousScreen;
+            return EventResult.HANDLED;
+        }
+        return EventResult.UNHANDLED;
+    }
+
+    private EventResult handleThemeScreenKey(KeyEvent event) {
+        if (event.isCancel()) {
             currentScreen = previousScreen;
             return EventResult.HANDLED;
         }
