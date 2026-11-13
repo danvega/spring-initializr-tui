@@ -307,6 +307,8 @@ public class MainScreen {
                 text("[ Explore e ]").fg(t.secondary()),
                 text("  "),
                 text("[ Quit q ]").fg(t.textDim()),
+                text("  "),
+                text("[ Themes t ]").fg(t.primaryDim()),
                 spacer()
         ).length(1);
     }

@@ -45,6 +45,15 @@ public class ConfigStore {
         }
     }
 
+    /**
+     * Persists just the theme while keeping every other preference intact.
+     */
+    public void saveTheme(String theme) {
+        UserPreferences prefs = load();
+        prefs.setTheme(theme);
+        save(prefs);
+    }
+
     public void save(UserPreferences prefs) {
         try {
             Files.createDirectories(configDir);
@@ -99,6 +108,7 @@ public class ConfigStore {
         public String getLastApplicationFormat() { return lastApplicationFormat; }
         public void setLastApplicationFormat(String v) { this.lastApplicationFormat = v; }
 
+        public List<List<String>> getRecentDependencies() { return recentDependencies; }
         public List<List<String>> recentDependencies() { return recentDependencies; }
         public void setRecentDependencies(List<List<String>> v) { this.recentDependencies = v; }
     }

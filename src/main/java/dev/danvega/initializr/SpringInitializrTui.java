@@ -31,7 +31,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
  */
 public class SpringInitializrTui extends ToolkitApp {
 
-    enum Screen { SPLASH, MAIN, EXPLORE, GENERATE, HELP }
+    enum Screen { SPLASH, MAIN, EXPLORE, GENERATE, HELP, THEME }
 
     private volatile Screen currentScreen = Screen.SPLASH;
     private Screen previousScreen = Screen.MAIN;
@@ -40,6 +40,7 @@ public class SpringInitializrTui extends ToolkitApp {
     private final ProjectConfig config = new ProjectConfig();
     private final GenerateScreen generateScreen = new GenerateScreen();
     private final HelpScreen helpScreen = new HelpScreen();
+    private final ThemeScreen themeScreen = new ThemeScreen();
 
     private volatile InitializrMetadata.Metadata metadata;
     private volatile MainScreen mainScreen;
@@ -102,6 +103,7 @@ public class SpringInitializrTui extends ToolkitApp {
             case MAIN -> mainScreen != null ? mainScreen.render() : text("Loading...").fg(ThemeManager.current().primary());
             case EXPLORE -> exploreScreen != null ? renderExploreScreen() : text("Loading...").fg(ThemeManager.current().primary());
             case GENERATE -> generateScreen.render();
+            case THEME -> themeScreen.render();
             case HELP -> helpScreen.render();
         };
 
@@ -112,7 +114,8 @@ public class SpringInitializrTui extends ToolkitApp {
     }
 
     private EventResult handleKeyEvent(KeyEvent event) {
-        if (event.isQuit() && !isTextFieldFocused()) {
+        boolean typingInThemeSearch = currentScreen == Screen.THEME && event.isChar('q');
+        if (event.isQuit() && !isTextFieldFocused() && !typingInThemeSearch) {
             quit();
             return EventResult.HANDLED;
         }
@@ -123,6 +126,7 @@ public class SpringInitializrTui extends ToolkitApp {
             case EXPLORE -> handleExploreScreenKey(event);
             case GENERATE -> handleGenerateScreenKey(event);
             case HELP -> handleHelpScreenKey(event);
+            case THEME -> handleThemeScreenKey(event);
         };
     }
 
@@ -169,6 +173,14 @@ public class SpringInitializrTui extends ToolkitApp {
         // i — enter insert mode when on a text field in normal mode
         if (event.isChar('i') && !vimInsertMode && isOnTextFieldArea()) {
             setInsertMode(true);
+            return EventResult.HANDLED;
+        }
+
+        // t — Show Theme Screen
+        if (event.isChar('t') && !isTextFieldFocused()) {
+            previousScreen = currentScreen;
+            currentScreen = Screen.THEME;
+            themeScreen.reset();
             return EventResult.HANDLED;
         }
 
@@ -394,6 +406,14 @@ public class SpringInitializrTui extends ToolkitApp {
 
     private EventResult handleHelpScreenKey(KeyEvent event) {
         if (event.isCancel() || event.isChar('?')) {
+            currentScreen = previousScreen;
+            return EventResult.HANDLED;
+        }
+        return EventResult.UNHANDLED;
+    }
+
+    private EventResult handleThemeScreenKey(KeyEvent event) {
+        if (event.isCancel()) {
             currentScreen = previousScreen;
             return EventResult.HANDLED;
         }

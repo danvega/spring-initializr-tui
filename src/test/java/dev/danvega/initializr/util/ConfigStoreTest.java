@@ -78,6 +78,44 @@ class ConfigStoreTest {
         assertThat(loaded.getLastPackaging()).isEqualTo("war");
     }
 
+    @Test
+    void loadSave_persistsRecentDependencies() {
+        var prefs = new ConfigStore.UserPreferences();
+        store.addRecentDependencies(prefs, List.of("web", "jpa"));
+        store.addRecentDependencies(prefs, List.of("security"));
+        store.save(prefs);
+
+        var loaded = store.load();
+        assertThat(loaded.recentDependencies())
+                .containsExactly(List.of("security"), List.of("web", "jpa"));
+    }
+
+    // --- theme persistence ---
+
+    @Test
+    void saveTheme_persistsThemeAndKeepsOtherPreferences() {
+        var prefs = new ConfigStore.UserPreferences();
+        prefs.setLastLanguage("kotlin");
+        prefs.setLastGroupId("org.acme");
+        store.save(prefs);
+
+        store.saveTheme("dracula");
+
+        var loaded = store.load();
+        assertThat(loaded.getTheme()).isEqualTo("dracula");
+        assertThat(loaded.getLastLanguage()).isEqualTo("kotlin");
+        assertThat(loaded.getLastGroupId()).isEqualTo("org.acme");
+    }
+
+    @Test
+    void saveTheme_usesDefaultsWhenFileMissing() {
+        store.saveTheme("nord");
+
+        var loaded = store.load();
+        assertThat(loaded.getTheme()).isEqualTo("nord");
+        assertThat(loaded.getLastProjectType()).isEqualTo("gradle-project");
+    }
+
     // --- load returns defaults when file doesn't exist ---
 
     @Test
