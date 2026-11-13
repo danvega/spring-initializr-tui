@@ -31,6 +31,7 @@ public class HelpScreen {
                                 shortcutRow("g", "Generate and download project"),
                                 shortcutRow("i", "Enter insert mode (text fields)"),
                                 shortcutRow("Esc", "Exit insert mode \u2192 normal mode"),
+                                shortcutRow("t", "Open the theme switcher"),
                                 shortcutRow("?", "Show this help screen"),
                                 shortcutRow("q / Ctrl+C", "Quit"),
                                 text(""),

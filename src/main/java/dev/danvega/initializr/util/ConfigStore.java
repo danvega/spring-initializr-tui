@@ -1,7 +1,6 @@
 package dev.danvega.initializr.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 

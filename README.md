@@ -46,9 +46,9 @@ After generation, the project is extracted to your chosen directory. The app aut
 A quick-reference help overlay showing all keyboard shortcuts organized by screen — Main Screen, Explore Screen, and Generate Screen.
 ![Help](screenshots/help.png)
 
-### Theme Selector
-A theme selector overlay showing all builtin themes organized by names - can be acsessed by keybindings.
-![Help](screenshots/theme_selector.png)
+### Theme Switcher
+Press `t` on the main screen to open the theme switcher. Type to filter the built-in themes, then press Enter to apply one. Your choice is saved to `config.json`.
+![Theme Switcher](screenshots/theme_selector.png)
 
 ## Features
 
@@ -204,9 +204,9 @@ The TUI supports color themes. The default is `spring` (the classic Spring green
 | `gruvbox-dark` | Gruvbox Dark — warm, retro orange and yellow palette | ![Gruvbox Dark](screenshots/themes/gruvbox-dark.png) |
 | `tokyo-night` | Tokyo Night — modern blue and cyan dark theme | ![Tokyo Night](screenshots/themes/tokyo-night.png) |
 | `synthwave-84` | Synthwave '84 — cool, neon cyberpunk dark theme | ![Synthwave '84](screenshots/themes/synthwave-84.png) |
-| `gruber-darker` |  Gruber Darker  — minimal : white and green hackerish theme | ![Gruber-Darker](screenshots/themes/gruber-darker.png) |
+| `gruber-darker` | Gruber Darker, a minimal white and green hacker theme | ![Gruber Darker](screenshots/themes/gruber-darker.png) |
 
-The theme is loaded at startup. To switch, change the value in `config.json` and relaunch the app. If the `theme` field is missing or unrecognized, it defaults to `spring`.
+You can also switch themes from inside the app. Press `t` on the main screen, pick a theme, and press Enter. It applies right away and is saved to `config.json`. If the `theme` field is missing or unrecognized, it defaults to `spring`.
 
 ## Open in Terminal
 

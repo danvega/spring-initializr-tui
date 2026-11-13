@@ -120,7 +120,8 @@ public class DependencyPicker {
         return activeCategoryIndex >= 0;
     }
 
-    private void rebuildFlatList() {flatItems.clear();
+    private void rebuildFlatList() {
+        flatItems.clear();
 
         if (!searchQuery.isEmpty()) {
             rebuildWithFuzzySearch();
@@ -331,7 +332,8 @@ public class DependencyPicker {
         return column(elements.toArray(Element[]::new));
     }
 
-    private Element renderHighlightedDep(String prefix, String checkmark, String name, int[] matchPositions, boolean isCursor, boolean isSelected) {
+    private Element renderHighlightedDep(String prefix, String checkmark, String name,
+                                          int[] matchPositions, boolean isCursor, boolean isSelected) {
         var t = ThemeManager.current();
         // Build the name with highlighted chars using row of text segments
         var parts = new ArrayList<Element>();

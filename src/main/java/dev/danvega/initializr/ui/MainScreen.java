@@ -171,8 +171,8 @@ public class MainScreen {
         return panel("",
                 row(
                         text("  SPRING INITIALIZR").fg(t.primary()).bold(),
-                        spacer()
-                        // text("v" + appVersion() + "  ").fg(t.textDim())
+                        spacer(),
+                        text("v" + appVersion() + "  ").fg(t.textDim())
                 )
         ).rounded().borderColor(t.primary()).length(3).id("header");
     }
@@ -301,13 +301,14 @@ public class MainScreen {
     private Element renderActionBar() {
         var t = ThemeManager.current();
         return row(
+                text("  "),
                 text("[ Generate g ]").fg(t.primary()).bold(),
                 text("  "),
                 text("[ Explore e ]").fg(t.secondary()),
                 text("  "),
                 text("[ Quit q ]").fg(t.textDim()),
                 text("  "),
-	        text("[ Themes t ]").fg(t.primaryDim()),
+                text("[ Themes t ]").fg(t.primaryDim()),
                 spacer()
         ).length(1);
     }
@@ -335,10 +336,10 @@ public class MainScreen {
         ).length(1);
     }
 
-    // private static String appVersion() {
-    //     String v = MainScreen.class.getPackage().getImplementationVersion();
-    //     return v != null ? v : "dev";
-    // }
+    private static String appVersion() {
+        String v = MainScreen.class.getPackage().getImplementationVersion();
+        return v != null ? v : "dev";
+    }
 
     private String displayName(InitializrMetadata.SelectOption option) {
         String name = option.name() != null ? option.name() : option.id();
